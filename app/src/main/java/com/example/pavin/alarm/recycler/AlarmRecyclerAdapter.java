@@ -19,7 +19,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     @NonNull
     @Override
     public AlarmViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new AlarmViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_alarm_item, viewGroup, false));
+        return new AlarmViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_alarm_item, viewGroup, false), mainPresenter);
     }
 
     @Override

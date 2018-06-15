@@ -1,5 +1,8 @@
 package com.example.pavin.alarm.presenter;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.recycler.AlarmViewHolder;
 import com.example.pavin.alarm.view.MainView;
@@ -33,5 +36,13 @@ public class MainPresenter extends BasePresenter<MainView>{
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(alarm.getTime());
         alarmViewHolder.showTime(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+    }
+
+    public void stateChanged(boolean b, int position) {
+        alarms.get(position).setEnabled(b);
+      /*  Alarm alarm = alarms.get(position);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(alarm.getTime());
+        Log.e("HHHHHHHHHHHHHHH", calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " BOOL: " + b);*/
     }
 }

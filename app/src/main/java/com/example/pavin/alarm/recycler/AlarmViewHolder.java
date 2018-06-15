@@ -2,21 +2,31 @@ package com.example.pavin.alarm.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.pavin.alarm.R;
+import com.example.pavin.alarm.presenter.MainPresenter;
 
 public class AlarmViewHolder extends RecyclerView.ViewHolder implements IViewHolder{
 
-    TextView tvTime, tvSound;
-    Switch swEnabled;
+    private TextView tvTime, tvSound;
+    private Switch swEnabled;
+    private MainPresenter presenter;
 
-    public AlarmViewHolder(View view){
+    AlarmViewHolder(View view, MainPresenter mainPresenter){
         super(view);
         tvTime = view.findViewById(R.id.tvTime);
         tvSound = view.findViewById(R.id.tvSound);
         swEnabled = view.findViewById(R.id.swEnabled);
+        swEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                presenter.stateChanged(b, getLayoutPosition());
+            }
+        });
+        presenter = mainPresenter;
     }
 
     @Override
