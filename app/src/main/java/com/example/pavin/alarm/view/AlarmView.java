@@ -10,4 +10,6 @@ public interface AlarmView {
 
     ContentResolver getContentResolver();
 
+    void finishActivity();
+
 }

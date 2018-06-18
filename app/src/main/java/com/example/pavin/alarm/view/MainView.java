@@ -4,4 +4,6 @@ public interface MainView {
 
     void startAddActivity();
 
+    void showAlarms();
+
 }

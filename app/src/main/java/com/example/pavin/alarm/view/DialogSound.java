@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
 
@@ -33,6 +34,7 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
         listView = v.findViewById(R.id.listSound);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_single_choice,android.R.id.text1, listener.getAdapterData());
         listView.setAdapter(adapter);
+        listView.setItemChecked(0, true);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setNegativeButton(getString(R.string.cancel), this)

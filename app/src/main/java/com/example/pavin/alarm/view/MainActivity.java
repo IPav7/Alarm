@@ -31,15 +31,24 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         fabAdd.setOnClickListener(this);
         presenter = new MainPresenter();
         presenter.bindView(this);
-        presenter.viewIsReady();
         adapter = new AlarmRecyclerAdapter(presenter);
         rvAlarms.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.viewIsReady();
     }
 
     @Override
     public void onClick(View view) {
         presenter.onClickFAB();
+    }
+
+    @Override
+    public void showAlarms(){
+        adapter.notifyDataSetChanged();
     }
 
     @Override
