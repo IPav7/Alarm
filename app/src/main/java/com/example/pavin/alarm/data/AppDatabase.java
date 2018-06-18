@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 
 public class AppDatabase extends Application {
 
-    public static AppDatabase INSTANCE;
+    private static AppDatabase INSTANCE;
     private static final String DATABASE_NAME = "database";
     private AlarmDatabase alarmDatabase;
 

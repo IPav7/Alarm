@@ -2,7 +2,6 @@ package com.example.pavin.alarm.presenter;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.recycler.AlarmViewHolder;

@@ -1,6 +1,6 @@
 package com.example.pavin.alarm.recycler;
 
-public interface IViewHolder {
+interface IViewHolder {
 
     void showTime(String time);
 

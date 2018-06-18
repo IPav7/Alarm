@@ -20,15 +20,15 @@ public class BasePresenter<V> {
         this.view = null;
     }
 
-    public V getView() {
+    V getView() {
         return view;
     }
 
-    public boolean isViewReady(){
+    boolean isViewReady(){
         return view != null;
     }
 
-    public AlarmDAO getAlarmDAO() {
+    AlarmDAO getAlarmDAO() {
         return alarmDAO;
     }
 }

@@ -21,27 +21,67 @@ import java.util.Calendar;
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView {
 
     private static final String TAG_SOUND = "TAG_SOUND";
-    RelativeLayout rlSound;
-    DialogFragment dialogSound;
-    AlarmPresenter alarmPresenter;
-    TextView tvSoundName;
-    TimePicker picker;
+    private static final String VAL_HOURS = "VAL_HOURS";
+    private static final String VAL_MINS = "VAL_MINS";
+    private static final String VAL_SOUND = "VAL_SOUND";
+    private AlarmPresenter alarmPresenter;
+    private TextView tvSoundName;
+    private TimePicker picker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        rlSound = findViewById(R.id.rlSound);
+        RelativeLayout rlSound = findViewById(R.id.rlSound);
         rlSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alarmPresenter.onClickChooseSound();
             }
         });
-        alarmPresenter = new AlarmPresenter();
-        alarmPresenter.bindView(this);
+        attachPresenter();
         tvSoundName = findViewById(R.id.tvSoundName);
         picker = findViewById(R.id.timePicker);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(VAL_SOUND, tvSoundName.getText().toString());
+        int hours, mins;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hours = picker.getHour();
+            mins = picker.getMinute();
+        }
+        else {
+            hours = picker.getCurrentHour();
+            mins = picker.getCurrentMinute();
+        }
+        outState.putInt(VAL_HOURS, hours);
+        outState.putInt(VAL_MINS, mins);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        tvSoundName.setText(savedInstanceState.getString(VAL_SOUND));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            picker.setHour(savedInstanceState.getInt(VAL_HOURS));
+            picker.setMinute(savedInstanceState.getInt(VAL_MINS));
+        }
+        else{
+            picker.setCurrentHour(savedInstanceState.getInt(VAL_HOURS));
+            picker.setCurrentMinute(savedInstanceState.getInt(VAL_MINS));
+        }
+    }
+
+    @Override
+    public void attachPresenter() {
+        alarmPresenter = (AlarmPresenter)getLastCustomNonConfigurationInstance();
+        if(alarmPresenter == null){
+            alarmPresenter = new AlarmPresenter();
+        }
+        alarmPresenter.bindView(this);
     }
 
     @Override
@@ -62,7 +102,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public void showSoundDialog() {
-        dialogSound = new DialogSound();
+        DialogFragment dialogSound = new DialogSound();
         dialogSound.show(getSupportFragmentManager(), TAG_SOUND);
     }
 

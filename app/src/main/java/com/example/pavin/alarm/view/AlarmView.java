@@ -12,4 +12,6 @@ public interface AlarmView {
 
     void finishActivity();
 
+    void attachPresenter();
+
 }

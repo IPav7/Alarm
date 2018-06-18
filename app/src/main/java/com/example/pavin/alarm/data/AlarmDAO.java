@@ -8,7 +8,6 @@ import android.arch.persistence.room.Update;
 
 import com.example.pavin.alarm.model.Alarm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

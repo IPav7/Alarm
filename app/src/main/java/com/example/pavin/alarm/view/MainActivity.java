@@ -14,25 +14,31 @@ import com.example.pavin.alarm.recycler.AlarmRecyclerAdapter;
 
 public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, MainView {
 
-    RecyclerView rvAlarms;
-    FloatingActionButton fabAdd;
-    MainPresenter presenter;
-    AlarmRecyclerAdapter adapter;
+    private MainPresenter presenter;
+    private AlarmRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rvAlarms = findViewById(R.id.rvAlarms);
+        RecyclerView rvAlarms = findViewById(R.id.rvAlarms);
         rvAlarms.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvAlarms.setLayoutManager(llm);
-        fabAdd = findViewById(R.id.fabAdd);
+        FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
-        presenter = new MainPresenter();
-        presenter.bindView(this);
+        attachPresenter();
         adapter = new AlarmRecyclerAdapter(presenter);
         rvAlarms.setAdapter(adapter);
+    }
+
+    @Override
+    public void attachPresenter() {
+        presenter = (MainPresenter)getLastCustomNonConfigurationInstance();
+        if(presenter == null) {
+            presenter = new MainPresenter();
+        }
+        presenter.bindView(this);
     }
 
     @Override
@@ -62,4 +68,10 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         Intent intent = new Intent(this, AlarmActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return presenter;
+    }
+
 }

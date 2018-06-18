@@ -6,4 +6,6 @@ public interface MainView {
 
     void showAlarms();
 
+    void attachPresenter();
+
 }
