@@ -1,6 +1,7 @@
 package com.example.pavin.alarm.view;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.presenter.AlarmPresenter;
@@ -21,9 +23,9 @@ import java.util.Calendar;
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView {
 
     private static final String TAG_SOUND = "TAG_SOUND";
-    private static final String VAL_HOURS = "VAL_HOURS";
-    private static final String VAL_MINS = "VAL_MINS";
-    private static final String VAL_SOUND = "VAL_SOUND";
+    public static final String VAL_HOURS = "VAL_HOURS";
+    public static final String VAL_MINS = "VAL_MINS";
+    public static final String VAL_SOUND = "VAL_SOUND";
     private AlarmPresenter alarmPresenter;
     private TextView tvSoundName;
     private TimePicker picker;
@@ -42,6 +44,10 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         attachPresenter();
         tvSoundName = findViewById(R.id.tvSoundName);
         picker = findViewById(R.id.timePicker);
+        Intent intent = getIntent();
+        if(intent.getExtras() != null){
+            alarmPresenter.editActivityStarted(intent.getExtras());
+        }
     }
 
     @Override
@@ -65,13 +71,21 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         tvSoundName.setText(savedInstanceState.getString(VAL_SOUND));
+        int hours, mins;
+        hours = savedInstanceState.getInt(VAL_HOURS);
+        mins = savedInstanceState.getInt(VAL_MINS);
+        setTimeToPicker(hours, mins);
+    }
+
+    @Override
+    public void setTimeToPicker(int hours, int mins) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            picker.setHour(savedInstanceState.getInt(VAL_HOURS));
-            picker.setMinute(savedInstanceState.getInt(VAL_MINS));
+            picker.setHour(hours);
+            picker.setMinute(mins);
         }
         else{
-            picker.setCurrentHour(savedInstanceState.getInt(VAL_HOURS));
-            picker.setCurrentMinute(savedInstanceState.getInt(VAL_MINS));
+            picker.setCurrentHour(hours);
+            picker.setCurrentMinute(mins);
         }
     }
 
@@ -134,7 +148,10 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
             calendar.set(Calendar.HOUR_OF_DAY, picker.getCurrentHour());
             calendar.set(Calendar.MINUTE, picker.getCurrentMinute());
         }
-        alarmPresenter.addClicked(tvSoundName.getText().toString(), calendar.getTimeInMillis());
+        if(getIntent().getExtras() == null) {
+            alarmPresenter.addClicked(tvSoundName.getText().toString(), calendar.getTimeInMillis());
+        }
+        else alarmPresenter.editAlarmClicked(tvSoundName.getText().toString(), calendar.getTimeInMillis(), getIntent().getExtras());
         return true;
     }
 

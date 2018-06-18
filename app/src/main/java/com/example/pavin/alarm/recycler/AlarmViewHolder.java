@@ -17,6 +17,12 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder implements IViewHol
 
     AlarmViewHolder(View view, MainPresenter mainPresenter){
         super(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onAlarmItemClick(getLayoutPosition());
+            }
+        });
         tvTime = view.findViewById(R.id.tvTime);
         tvSound = view.findViewById(R.id.tvSound);
         swEnabled = view.findViewById(R.id.swEnabled);

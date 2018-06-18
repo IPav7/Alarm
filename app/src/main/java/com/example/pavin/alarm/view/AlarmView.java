@@ -8,6 +8,8 @@ public interface AlarmView {
 
     void setSoundName(String sound);
 
+    void setTimeToPicker(int hours, int mins);
+
     ContentResolver getContentResolver();
 
     void finishActivity();

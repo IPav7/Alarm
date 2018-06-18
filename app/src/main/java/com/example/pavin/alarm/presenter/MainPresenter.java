@@ -45,6 +45,10 @@ public class MainPresenter extends BasePresenter<MainView>{
         }).start();
     }
 
+    public void onAlarmItemClick(int layoutPosition) {
+        getView().startEditActivity(alarms.get(layoutPosition));
+    }
+
     class LoadAlarms extends AsyncTask<Void, Void, List<Alarm>> {
         @Override
         protected List<Alarm> doInBackground(Void... voids) {

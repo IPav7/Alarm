@@ -1,14 +1,19 @@
 package com.example.pavin.alarm.presenter;
 
 import android.content.ContentUris;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 
 import com.example.pavin.alarm.model.Alarm;
+import com.example.pavin.alarm.view.AlarmActivity;
 import com.example.pavin.alarm.view.AlarmView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Objects;
 
 public class AlarmPresenter extends BasePresenter<AlarmView> {
 
@@ -50,6 +55,31 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
                 getAlarmDAO().insert(new Alarm(sound, timeInMillis, true));
             }
         }).start();
+        getView().finishActivity();
+    }
+
+    public void editActivityStarted(Bundle extras) {
+        Alarm alarm = (Alarm)extras.getSerializable("ALARM");
+        if(alarm != null) {
+            getView().setSoundName(alarm.getSound());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(alarm.getTime());
+            getView().setTimeToPicker(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        }
+    }
+
+    public void editAlarmClicked(String sound, long timeInMillis, Bundle bundle) {
+        final Alarm alarm = (Alarm)bundle.getSerializable("ALARM");
+        if(alarm != null) {
+            alarm.setSound(sound);
+            alarm.setTime(timeInMillis);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getAlarmDAO().update(alarm);
+                }
+            }).start();
+        }
         getView().finishActivity();
     }
 }

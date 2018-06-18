@@ -9,8 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.pavin.alarm.R;
+import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.presenter.MainPresenter;
 import com.example.pavin.alarm.recycler.AlarmRecyclerAdapter;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, MainView {
 
@@ -66,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     @Override
     public void startAddActivity() {
         Intent intent = new Intent(this, AlarmActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startEditActivity(Alarm alarm) {
+        Intent intent = new Intent(this, AlarmActivity.class);
+        intent.putExtra("ALARM", alarm);
         startActivity(intent);
     }
 
