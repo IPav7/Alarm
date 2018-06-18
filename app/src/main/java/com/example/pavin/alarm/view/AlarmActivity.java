@@ -1,5 +1,6 @@
 package com.example.pavin.alarm.view;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         rlSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alarmPresenter.onClickChoose("LOL");
+                alarmPresenter.onClickChooseSound();
             }
         });
         alarmPresenter = new AlarmPresenter();
@@ -35,8 +36,14 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     }
 
     @Override
-    public void onSoundChoose(int position) {
-        alarmPresenter.onSoundChoose(position);
+    protected void onDestroy() {
+        alarmPresenter.unbindView();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSoundSelected(int position) {
+        alarmPresenter.onSoundSelected(position);
     }
 
     @Override
@@ -48,5 +55,15 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public void showSoundDialog() {
         dialogSound = new DialogSound();
         dialogSound.show(getSupportFragmentManager(), TAG_SOUND);
+    }
+
+    @Override
+    public String[] getAdapterData() {
+        return alarmPresenter.getAdapterData();
+    }
+
+    @Override
+    public ContentResolver getContentResolver() {
+        return super.getContentResolver();
     }
 }

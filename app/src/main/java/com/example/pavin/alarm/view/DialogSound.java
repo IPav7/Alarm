@@ -15,8 +15,6 @@ import android.widget.ListView;
 
 import com.example.pavin.alarm.R;
 
-import java.util.ArrayList;
-
 public class DialogSound extends DialogFragment implements DialogInterface.OnClickListener {
 
     OnSoundChooseListener listener;
@@ -27,29 +25,19 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
         super.onCreate(savedInstanceState);
     }
 
-    ArrayList<String> soundList;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View v = inflater.inflate(R.layout.dialog_sound, null);
         listView = v.findViewById(R.id.listSound);
-        soundList = new ArrayList<>();
-        fillList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_single_choice,android.R.id.text1, soundList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_single_choice,android.R.id.text1, listener.getAdapterData());
         listView.setAdapter(adapter);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setNegativeButton(getString(R.string.cancel), this)
                 .setPositiveButton(getString(R.string.ok), this);
         return builder.create();
-    }
-
-    void fillList(){
-        soundList.add("LOL");
-        soundList.add("KEK");
-        soundList.add("CHEBUREK");
     }
 
     @Override
@@ -65,7 +53,7 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
     public void onClick(DialogInterface dialogInterface, int i) {
         switch (i){
             case Dialog.BUTTON_POSITIVE:
-                listener.onSoundChoose(listView.getCheckedItemPosition());
+                listener.onSoundSelected(listView.getCheckedItemPosition());
                 break;
             case Dialog.BUTTON_NEGATIVE:
                 dismiss();
@@ -74,7 +62,8 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
     }
 
     public interface OnSoundChooseListener{
-        void onSoundChoose(int position);
+        void onSoundSelected(int position);
+        String[] getAdapterData();
     }
 
 }

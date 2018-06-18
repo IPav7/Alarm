@@ -1,7 +1,12 @@
 package com.example.pavin.alarm.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity
 public class Alarm {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String sound;
     private long time;
