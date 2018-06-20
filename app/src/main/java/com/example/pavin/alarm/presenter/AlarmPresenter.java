@@ -75,6 +75,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
                 getAlarmDAO().insert(alarm);
             }
         }).start();
+        setAlarm(alarm);
         getView().finishActivity();
     }
 

@@ -1,10 +1,19 @@
 package com.example.pavin.alarm.model;
 
+import android.app.AlarmManager;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 
 @Entity
 public class Alarm implements Serializable {
@@ -73,7 +82,23 @@ public class Alarm implements Serializable {
     }
 
     public long getNextTrigger(){
-        return System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        List<Calendar> list = new LinkedList<>();
+        for (int i = 0; i < days.length; i++) {
+            if(days[i]) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_WEEK, i + 2);
+                cal.set(Calendar.HOUR_OF_DAY, hours);
+                cal.set(Calendar.MINUTE, mins);
+                if (calendar.compareTo(cal) == 1){// одинаковое время???
+                    cal.setTimeInMillis(cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY*7);
+                }
+                list.add(cal);
+            }
+        }
+        Collections.sort(list);
+        //один раз???
+        return list.get(0).getTimeInMillis();
     }
 
     public boolean isEnabled() {
@@ -100,4 +125,15 @@ public class Alarm implements Serializable {
         this.sound = sound;
     }
 
+    @Override
+    public String toString() {
+        return "Alarm{" +
+                "id=" + id +
+                ", sound='" + sound + '\'' +
+                ", enabled=" + enabled +
+                ", hours=" + hours +
+                ", mins=" + mins +
+                ", days=" + Arrays.toString(days) +
+                '}';
+    }
 }
