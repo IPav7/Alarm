@@ -1,6 +1,7 @@
 package com.example.pavin.alarm.view;
 
 import android.content.ContentResolver;
+import android.view.View;
 
 public interface AlarmView {
 
@@ -16,4 +17,7 @@ public interface AlarmView {
 
     void attachPresenter();
 
+    void changeDayImage(View view, boolean enabledInDay);
+
+    void setDaysImages(boolean[] days);
 }

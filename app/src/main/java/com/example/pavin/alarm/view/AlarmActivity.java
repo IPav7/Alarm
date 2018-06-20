@@ -1,7 +1,6 @@
 package com.example.pavin.alarm.view;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -10,22 +9,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
+import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.presenter.AlarmPresenter;
-
-import java.util.Calendar;
 
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView {
 
     private static final String TAG_SOUND = "TAG_SOUND";
-    public static final String VAL_HOURS = "VAL_HOURS";
-    public static final String VAL_MINS = "VAL_MINS";
-    public static final String VAL_SOUND = "VAL_SOUND";
     private AlarmPresenter alarmPresenter;
     private TextView tvSoundName;
     private TimePicker picker;
@@ -41,41 +36,40 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 alarmPresenter.onClickChooseSound();
             }
         });
-        attachPresenter();
         tvSoundName = findViewById(R.id.tvSoundName);
         picker = findViewById(R.id.timePicker);
-        Intent intent = getIntent();
-        if(intent.getExtras() != null){
-            alarmPresenter.editActivityStarted(intent.getExtras());
-        }
+        picker.setIs24HourView(true);
+        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
+                alarmPresenter.changeTime(i, i1);
+            }
+        });
+        attachPresenter();
+    }
+
+    public void onDayClick(View view){
+        alarmPresenter.onDayClick(view);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(VAL_SOUND, tvSoundName.getText().toString());
-        int hours, mins;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            hours = picker.getHour();
-            mins = picker.getMinute();
-        }
-        else {
-            hours = picker.getCurrentHour();
-            mins = picker.getCurrentMinute();
-        }
-        outState.putInt(VAL_HOURS, hours);
-        outState.putInt(VAL_MINS, mins);
+    public void setDaysImages(boolean[] days) {
+        changeDayImage(findViewById(R.id.imgMon), days[Alarm.MONDAY]);
+        changeDayImage(findViewById(R.id.imgTue), days[Alarm.TUESDAY]);
+        changeDayImage(findViewById(R.id.imgWed), days[Alarm.WEDNESDAY]);
+        changeDayImage(findViewById(R.id.imgThu), days[Alarm.THURSDAY]);
+        changeDayImage(findViewById(R.id.imgFri), days[Alarm.FRIDAY]);
+        changeDayImage(findViewById(R.id.imgSat), days[Alarm.SATURDAY]);
+        changeDayImage(findViewById(R.id.imgSun), days[Alarm.SUNDAY]);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        tvSoundName.setText(savedInstanceState.getString(VAL_SOUND));
-        int hours, mins;
-        hours = savedInstanceState.getInt(VAL_HOURS);
-        mins = savedInstanceState.getInt(VAL_MINS);
-        setTimeToPicker(hours, mins);
+    public void changeDayImage(View view, boolean enabledInDay) {
+        if (enabledInDay)
+            ((ImageView)view).setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
+        else ((ImageView)view).setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
     }
+
 
     @Override
     public void setTimeToPicker(int hours, int mins) {
@@ -93,9 +87,25 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public void attachPresenter() {
         alarmPresenter = (AlarmPresenter)getLastCustomNonConfigurationInstance();
         if(alarmPresenter == null){
-            alarmPresenter = new AlarmPresenter();
+            if(getIntent().getExtras() == null) {
+                alarmPresenter = new AlarmPresenter();
+            }
+            else{
+                alarmPresenter = new AlarmPresenter((Alarm)getIntent().getExtras().getSerializable("ALARM"));
+            }
         }
         alarmPresenter.bindView(this);
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return alarmPresenter;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        alarmPresenter.viewIsReady();
     }
 
     @Override
@@ -139,19 +149,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Calendar calendar = Calendar.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            calendar.set(Calendar.HOUR_OF_DAY, picker.getHour());
-            calendar.set(Calendar.MINUTE, picker.getMinute());
-        }
-        else {
-            calendar.set(Calendar.HOUR_OF_DAY, picker.getCurrentHour());
-            calendar.set(Calendar.MINUTE, picker.getCurrentMinute());
-        }
-        if(getIntent().getExtras() == null) {
-            alarmPresenter.addClicked(tvSoundName.getText().toString(), calendar.getTimeInMillis());
-        }
-        else alarmPresenter.editAlarmClicked(tvSoundName.getText().toString(), calendar.getTimeInMillis(), getIntent().getExtras());
+        alarmPresenter.submitChanges();
         return true;
     }
 

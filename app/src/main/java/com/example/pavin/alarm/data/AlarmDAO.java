@@ -3,6 +3,7 @@ package com.example.pavin.alarm.data;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -16,7 +17,7 @@ public interface AlarmDAO {
     @Query("SELECT * FROM Alarm")
     List<Alarm> getAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Alarm alarm);
 
     @Update

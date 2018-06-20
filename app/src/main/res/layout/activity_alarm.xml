@@ -34,4 +34,60 @@
             android:textSize="20sp"/>
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/monday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgMon"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/tuesday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgTue"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/wednesday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgWed"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/thursday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgThu"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/friday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgFri"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/saturday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgSat"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:contentDescription="@string/sunday"
+            android:onClick="onDayClick"
+            android:id="@+id/imgSun"/>
+    </LinearLayout>
+
 </LinearLayout>
