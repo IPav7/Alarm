@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
+import com.example.pavin.alarm.data.App;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.view.AlarmActivity;
 import com.example.pavin.alarm.view.AlarmView;
@@ -75,7 +76,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
                 getAlarmDAO().insert(alarm);
             }
         }).start();
-        setAlarm(alarm);
+        App.setAlarm(alarm);
         getView().finishActivity();
     }
 

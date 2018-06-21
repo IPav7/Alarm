@@ -17,6 +17,9 @@ public interface AlarmDAO {
     @Query("SELECT * FROM Alarm")
     List<Alarm> getAll();
 
+    @Query("SELECT * FROM Alarm WHERE enabled = 1")
+    List<Alarm> getEnabled();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Alarm alarm);
 

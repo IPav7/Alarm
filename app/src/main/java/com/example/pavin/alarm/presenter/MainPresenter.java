@@ -41,6 +41,7 @@ public class MainPresenter extends BasePresenter<MainView>{
                 getAlarmDAO().update(alarms.get(position));
             }
         }).start();
+        // TODO: disable
     }
 
     public void onAlarmItemClick(int layoutPosition) {

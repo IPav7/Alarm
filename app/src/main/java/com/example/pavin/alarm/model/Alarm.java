@@ -83,22 +83,44 @@ public class Alarm implements Serializable {
 
     public long getNextTrigger(){
         Calendar calendar = Calendar.getInstance();
-        List<Calendar> list = new LinkedList<>();
-        for (int i = 0; i < days.length; i++) {
-            if(days[i]) {
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.DAY_OF_WEEK, i + 2);
-                cal.set(Calendar.HOUR_OF_DAY, hours);
-                cal.set(Calendar.MINUTE, mins);
-                if (calendar.compareTo(cal) == 1){// одинаковое время???
-                    cal.setTimeInMillis(cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY*7);
-                }
-                list.add(cal);
-            }
+        Calendar cal;
+        if(isOneTime()) {
+            cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
+            if(calendar.compareTo(cal) > 0)
+                cal.setTimeInMillis(cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY);
+            return cal.getTimeInMillis();
         }
-        Collections.sort(list);
-        //один раз???
-        return list.get(0).getTimeInMillis();
+        else{
+            List<Calendar> list = new LinkedList<>();
+            for (int i = 0; i < days.length; i++) {
+                if (days[i]) {
+                    cal = initCalendar(i + 2);
+                    if (calendar.compareTo(cal) > 0) {
+                        cal.setTimeInMillis(cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY * 7);
+                    }
+                    list.add(cal);
+                }
+            }
+            Collections.sort(list);
+            return list.get(0).getTimeInMillis();
+        }
+    }
+
+    private Calendar initCalendar(int i) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, i);
+        cal.set(Calendar.HOUR_OF_DAY, hours);
+        cal.set(Calendar.MINUTE, mins);
+        cal.set(Calendar.SECOND, 0);
+        return cal;
+    }
+
+    private boolean isOneTime(){
+        for (boolean b :
+                days) {
+            if (b) return false;
+        }
+        return true;
     }
 
     public boolean isEnabled() {
