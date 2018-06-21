@@ -28,20 +28,21 @@ public class Alarm implements Serializable {
                       SATURDAY = 5,
                       SUNDAY = 6;
 
-    @PrimaryKey()
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String sound;
     private boolean enabled;
     private int hours, mins;
     private boolean[] days;
 
-    public Alarm(){
-        new Thread(new Runnable() {
+    public Alarm(){//id = 0
+
+     /*   new Thread(new Runnable() {
             @Override
             public void run() {
                 id = App.getInstance().getAlarmDatabase().alarmDAO().getMaxID()+1;
             }
-        }).start();
+        }).start();*/
         sound = "Standard";
         enabled = true;
         hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -49,7 +50,8 @@ public class Alarm implements Serializable {
         days = new boolean[7];
     }
 
-    public Alarm(String sound, boolean enabled, int hours, int mins, boolean[] days) {
+    public Alarm(int id, String sound, boolean enabled, int hours, int mins, boolean[] days) {
+        this.id = id;
         this.sound = sound;
         this.enabled = enabled;
         this.hours = hours;
@@ -123,7 +125,7 @@ public class Alarm implements Serializable {
         return cal;
     }
 
-    private boolean isOneTime(){
+    public boolean isOneTime(){
         for (boolean b :
                 days) {
             if (b) return false;

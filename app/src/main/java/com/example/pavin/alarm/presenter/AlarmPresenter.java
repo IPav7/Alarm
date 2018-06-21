@@ -1,24 +1,16 @@
 package com.example.pavin.alarm.presenter;
 
-import android.content.ContentUris;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.data.App;
 import com.example.pavin.alarm.model.Alarm;
-import com.example.pavin.alarm.view.AlarmActivity;
 import com.example.pavin.alarm.view.AlarmView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Objects;
 
 public class AlarmPresenter extends BasePresenter<AlarmView> {
 
@@ -27,6 +19,12 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
 
     public AlarmPresenter() {
         alarm = new Alarm();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                alarm.setId(App.getInstance().getAlarmDatabase().alarmDAO().getMaxID()+1);
+            }
+        }).start();
     }
 
     public AlarmPresenter(Alarm alarm){
@@ -52,16 +50,18 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         if(soundList == null)
             soundList = new ArrayList<>();
         else soundList.clear();
-        String[] projection = { MediaStore.Audio.Media._ID,MediaStore.Audio.Media.DISPLAY_NAME};
+        String[] projection = { MediaStore.Audio.Media._ID,MediaStore.Audio.Media.TITLE};
         String selection = MediaStore.Audio.Media.MIME_TYPE + " = 'audio/mpeg'";
         Cursor audioCursor = getView().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
         soundList.add("Standard");
         if(audioCursor != null){
             if(audioCursor.moveToFirst()){
                 do{
-                    Uri soundURI = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                            audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
-                    soundList.add(soundURI + "");
+                    //Uri soundURI = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                      //      audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                    int columnIndex = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
+                    //soundList.add(soundURI + "");
+                    soundList.add(audioCursor.getString(columnIndex));
                 }while(audioCursor.moveToNext());
             }
             audioCursor.close();

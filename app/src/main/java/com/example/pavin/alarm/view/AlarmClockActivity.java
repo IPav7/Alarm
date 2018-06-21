@@ -26,6 +26,7 @@ public class AlarmClockActivity extends AppCompatActivity {
         if(alarm != null) {
             TextView textView = findViewById(R.id.tvAboutAlarm);
             textView.setText(alarm.toString());
+            if(!alarm.isOneTime())
             App.setAlarm(alarm);
         }
     }
