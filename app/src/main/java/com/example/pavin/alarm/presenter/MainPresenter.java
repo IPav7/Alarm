@@ -2,6 +2,7 @@ package com.example.pavin.alarm.presenter;
 
 import android.os.AsyncTask;
 
+import com.example.pavin.alarm.data.App;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.recycler.AlarmViewHolder;
 import com.example.pavin.alarm.view.MainView;
@@ -41,7 +42,7 @@ public class MainPresenter extends BasePresenter<MainView>{
                 getAlarmDAO().update(alarms.get(position));
             }
         }).start();
-        // TODO: disable
+        App.setAlarm(alarms.get(position));
     }
 
     public void onAlarmItemClick(int layoutPosition) {

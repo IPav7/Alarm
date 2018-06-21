@@ -26,10 +26,10 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder implements IViewHol
         tvTime = view.findViewById(R.id.tvTime);
         tvSound = view.findViewById(R.id.tvSound);
         swEnabled = view.findViewById(R.id.swEnabled);
-        swEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swEnabled.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                presenter.stateChanged(b, getLayoutPosition());
+            public void onClick(View view) {
+                presenter.stateChanged(swEnabled.isChecked(), getLayoutPosition());
             }
         });
         presenter = mainPresenter;

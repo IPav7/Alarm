@@ -20,6 +20,9 @@ public interface AlarmDAO {
     @Query("SELECT * FROM Alarm WHERE enabled = 1")
     List<Alarm> getEnabled();
 
+    @Query("SELECT id from Alarm ORDER BY id DESC LIMIT 1")
+    int getMaxID();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Alarm alarm);
 
