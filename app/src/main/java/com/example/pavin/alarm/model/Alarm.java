@@ -1,8 +1,10 @@
 package com.example.pavin.alarm.model;
 
 import android.app.AlarmManager;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.pavin.alarm.data.App;
@@ -30,7 +32,8 @@ public class Alarm implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String sound;
+    @Embedded(prefix = "sound_")
+    private Sound sound;
     private boolean enabled;
     private int hours, mins;
     private boolean[] days;
@@ -43,14 +46,14 @@ public class Alarm implements Serializable {
                 id = App.getInstance().getAlarmDatabase().alarmDAO().getMaxID()+1;
             }
         }).start();*/
-        sound = "Standard";
+        sound = new Sound("Standard", null);
         enabled = true;
         hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         mins = Calendar.getInstance().get(Calendar.MINUTE);
         days = new boolean[7];
     }
 
-    public Alarm(int id, String sound, boolean enabled, int hours, int mins, boolean[] days) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
@@ -149,11 +152,11 @@ public class Alarm implements Serializable {
         this.id = id;
     }
 
-    public String getSound() {
+    public Sound getSound() {
         return sound;
     }
 
-    public void setSound(String sound) {
+    public void setSound(Sound sound) {
         this.sound = sound;
     }
 
@@ -161,7 +164,7 @@ public class Alarm implements Serializable {
     public String toString() {
         return "Alarm{" +
                 "id=" + id +
-                ", sound='" + sound + '\'' +
+                ", sound='" + sound.getName() + '\'' +
                 ", enabled=" + enabled +
                 ", hours=" + hours +
                 ", mins=" + mins +

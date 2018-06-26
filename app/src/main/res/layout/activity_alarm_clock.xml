@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".view.AlarmClockActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:id="@+id/tvAboutAlarm"/>
+        android:text="@string/cancel"
+        android:id="@+id/btnCancel"/>
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.pavin.alarm.presenter;
 
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -8,13 +10,14 @@ import android.view.View;
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.data.App;
 import com.example.pavin.alarm.model.Alarm;
+import com.example.pavin.alarm.model.Sound;
 import com.example.pavin.alarm.view.AlarmView;
 
 import java.util.ArrayList;
 
 public class AlarmPresenter extends BasePresenter<AlarmView> {
 
-    private ArrayList<String> soundList;
+    private ArrayList<Sound> soundList;
     private Alarm alarm;
 
     public AlarmPresenter() {
@@ -34,39 +37,37 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     public void viewIsReady(){
         getView().setTimeToPicker(alarm.getHours(), alarm.getMins());
         getView().setDaysImages(alarm.getDays());
-        getView().setSoundName(alarm.getSound());
+        getView().setSoundName(alarm.getSound().getName());
     }
 
     public void onSoundSelected(int position) {
         alarm.setSound(soundList.get(position));
-        getView().setSoundName(alarm.getSound());
+        getView().setSoundName(alarm.getSound().getName());
     }
 
     public void onClickChooseSound() {
         getView().showSoundDialog();
     }
 
-    public String[] getAdapterData() {
+    public ArrayList<Sound> getAdapterData() {
         if(soundList == null)
             soundList = new ArrayList<>();
         else soundList.clear();
         String[] projection = { MediaStore.Audio.Media._ID,MediaStore.Audio.Media.TITLE};
         String selection = MediaStore.Audio.Media.MIME_TYPE + " = 'audio/mpeg'";
         Cursor audioCursor = getView().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
-        soundList.add("Standard");
         if(audioCursor != null){
             if(audioCursor.moveToFirst()){
                 do{
-                    //Uri soundURI = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                      //      audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                    Uri soundURI = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                           audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
                     int columnIndex = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
-                    //soundList.add(soundURI + "");
-                    soundList.add(audioCursor.getString(columnIndex));
+                    soundList.add(new Sound(audioCursor.getString(columnIndex), soundURI.toString()));
                 }while(audioCursor.moveToNext());
             }
             audioCursor.close();
         }
-        return soundList.toArray(new String[soundList.size()]);
+        return soundList;
     }
 
     public void submitChanges() {
@@ -117,4 +118,9 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         alarm.setHours(hours);
         alarm.setMins(mins);
     }
+
+    public Sound getSelectedAudio(){
+        return alarm.getSound();
+    }
+
 }

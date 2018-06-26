@@ -51,7 +51,7 @@ public class App extends Application {
             else alarmManager.cancel(pendingIntent);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
-        Log.e("SETTING IP ALARM AT: ", sdf.format(new Date(alarm.getNextTrigger())));
+        Log.e("SETTING UP ALARM №" + alarm.getId() + " AT: ", sdf.format(new Date(alarm.getNextTrigger())));
     }
 
     public static App getInstance(){

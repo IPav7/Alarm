@@ -13,6 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.pavin.alarm.R;
+import com.example.pavin.alarm.model.Sound;
+
+import java.util.ArrayList;
 
 public class DialogSound extends DialogFragment implements DialogInterface.OnClickListener {
 
@@ -24,9 +27,10 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View v = View.inflate(getActivity(), R.layout.dialog_sound, null);
         listView = v.findViewById(R.id.listSound);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_single_choice,android.R.id.text1, listener.getAdapterData());
+        ArrayList<Sound> soundList = listener.getAdapterData();
+        ArrayAdapter<Sound> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_single_choice,android.R.id.text1, soundList);
         listView.setAdapter(adapter);
-        listView.setItemChecked(0, true);
+        listView.setItemChecked(soundList.indexOf(listener.getSelectedAudio()), true);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setNegativeButton(getString(R.string.cancel), this)
@@ -57,7 +61,8 @@ public class DialogSound extends DialogFragment implements DialogInterface.OnCli
 
     public interface OnSoundChooseListener{
         void onSoundSelected(int position);
-        String[] getAdapterData();
+        ArrayList<Sound> getAdapterData();
+        Sound getSelectedAudio();
     }
 
 }

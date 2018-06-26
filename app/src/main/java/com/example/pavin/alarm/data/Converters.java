@@ -1,6 +1,7 @@
 package com.example.pavin.alarm.data;
 
 import android.arch.persistence.room.TypeConverter;
+import android.net.Uri;
 import android.util.Log;
 
 import java.util.Arrays;

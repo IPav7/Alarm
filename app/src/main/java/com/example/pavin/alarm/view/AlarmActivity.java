@@ -1,6 +1,5 @@
 package com.example.pavin.alarm.view;
 
-import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,10 @@ import android.widget.TimePicker;
 
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.model.Alarm;
+import com.example.pavin.alarm.model.Sound;
 import com.example.pavin.alarm.presenter.AlarmPresenter;
+
+import java.util.ArrayList;
 
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView {
 
@@ -132,7 +134,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     }
 
     @Override
-    public String[] getAdapterData() {
+    public ArrayList<Sound> getAdapterData() {
         return alarmPresenter.getAdapterData();
     }
 
@@ -152,6 +154,11 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public boolean onOptionsItemSelected(MenuItem item) {
         alarmPresenter.submitChanges();
         return true;
+    }
+
+    @Override
+    public Sound getSelectedAudio() {
+        return alarmPresenter.getSelectedAudio();
     }
 
     @Override

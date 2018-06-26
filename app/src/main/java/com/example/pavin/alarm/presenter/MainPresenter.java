@@ -30,7 +30,7 @@ public class MainPresenter extends BasePresenter<MainView>{
     public void onBindViewHolder(AlarmViewHolder alarmViewHolder, int i) {
         Alarm alarm = alarms.get(i);
         alarmViewHolder.showEnabled(alarm.isEnabled());
-        alarmViewHolder.showSound(alarm.getSound());
+        alarmViewHolder.showSound(alarm.getSound().getName());
         alarmViewHolder.showTime(alarm.getHours() + ":" + alarm.getMins());
     }
 
