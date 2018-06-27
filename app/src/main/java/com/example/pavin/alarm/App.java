@@ -1,4 +1,4 @@
-package com.example.pavin.alarm.data;
+package com.example.pavin.alarm;
 
 import android.app.AlarmManager;
 import android.app.Application;
@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.pavin.alarm.db.AlarmDatabase;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.view.AlarmClockActivity;
 

@@ -3,7 +3,7 @@ package com.example.pavin.alarm.view;
 import android.content.ContentResolver;
 import android.view.View;
 
-public interface AlarmView {
+public interface AlarmView extends BaseView{
 
     void showSoundDialog();
 
@@ -14,8 +14,6 @@ public interface AlarmView {
     ContentResolver getContentResolver();
 
     void finishActivity();
-
-    void attachPresenter();
 
     void changeDayImage(View view, boolean enabledInDay);
 

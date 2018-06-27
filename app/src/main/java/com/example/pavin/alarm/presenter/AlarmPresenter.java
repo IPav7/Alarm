@@ -4,11 +4,10 @@ import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 
 import com.example.pavin.alarm.R;
-import com.example.pavin.alarm.data.App;
+import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.model.Sound;
 import com.example.pavin.alarm.view.AlarmView;

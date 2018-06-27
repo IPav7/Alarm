@@ -1,9 +1,10 @@
 package com.example.pavin.alarm.presenter;
 
-import com.example.pavin.alarm.data.AlarmDAO;
-import com.example.pavin.alarm.data.App;
+import com.example.pavin.alarm.db.AlarmDAO;
+import com.example.pavin.alarm.App;
+import com.example.pavin.alarm.view.BaseView;
 
-public class BasePresenter<V> {
+public class BasePresenter<V extends BaseView> {
 
     private V view;
     private AlarmDAO alarmDAO;

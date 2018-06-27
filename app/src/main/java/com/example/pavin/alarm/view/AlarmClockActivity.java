@@ -1,6 +1,5 @@
 package com.example.pavin.alarm.view;
 
-import android.arch.persistence.room.util.StringUtil;
 import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -19,7 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
-import com.example.pavin.alarm.data.App;
+import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.model.Alarm;
 
 import java.util.Locale;
@@ -31,7 +30,7 @@ public class AlarmClockActivity extends AppCompatActivity {
     Alarm alarm;
     TextToSpeech textToSpeech;
     String googleTTSPackage = "com.google.android.tts";
-    private static final String ENG_TAG = "TTS ENGINE";
+    private final String ENG_TAG = "TTS ENGINE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
