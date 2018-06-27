@@ -29,7 +29,7 @@ public class BasePresenter<V extends BaseView> {
         return view != null;
     }
 
-    AlarmDAO getAlarmDAO() {
+    protected AlarmDAO getAlarmDAO() {
         return alarmDAO;
     }
 }

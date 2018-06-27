@@ -4,14 +4,23 @@ import android.os.AsyncTask;
 
 import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.model.Alarm;
-import com.example.pavin.alarm.recycler.AlarmViewHolder;
+import com.example.pavin.alarm.view.recycler.AlarmRecyclerAdapter;
 import com.example.pavin.alarm.view.MainView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainPresenter extends BasePresenter<MainView>{
-    
+public class MainPresenter extends BasePresenter<MainView> implements AlarmRecyclerAdapter.OnAlarmItemClickListener {
+
     private List<Alarm> alarms;
+
+    public MainPresenter() {
+        alarms = new ArrayList<>();
+    }
+
+    public List<Alarm> getAlarms() {
+        return alarms;
+    }
 
     public void onClickFAB(){
         getView().startAddActivity();
@@ -21,32 +30,19 @@ public class MainPresenter extends BasePresenter<MainView>{
         new LoadAlarms().execute();
     }
 
-    public int getItemCount() {
-        if(alarms != null)
-        return alarms.size();
-        else return 0;
-    }
-
-    public void onBindViewHolder(AlarmViewHolder alarmViewHolder, int i) {
-        Alarm alarm = alarms.get(i);
-        alarmViewHolder.showEnabled(alarm.isEnabled());
-        alarmViewHolder.showSound(alarm.getSound().getName());
-        alarmViewHolder.showTime(alarm.getHours() + ":" + alarm.getMins());
-    }
-
-    public void stateChanged(boolean b, final int position) {
-        alarms.get(position).setEnabled(b);
+    public void stateChanged(final Alarm alarm) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getAlarmDAO().update(alarms.get(position));
+                getAlarmDAO().update(alarm);
             }
         }).start();
-        App.setAlarm(alarms.get(position));
+        App.setAlarm(alarm);
     }
 
-    public void onAlarmItemClick(int layoutPosition) {
-        getView().startEditActivity(alarms.get(layoutPosition));
+    @Override
+    public void onAlarmItemClick(Alarm alarm) {
+        getView().startEditActivity(alarm);
     }
 
     class LoadAlarms extends AsyncTask<Void, Void, List<Alarm>> {
@@ -58,7 +54,8 @@ public class MainPresenter extends BasePresenter<MainView>{
         @Override
         protected void onPostExecute(List<Alarm> list) {
             if(list != null) {
-                alarms = list;
+                alarms.clear();
+                alarms.addAll(list);
                 if (isViewReady())
                     getView().showAlarms();
             }

@@ -6,14 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.presenter.MainPresenter;
-import com.example.pavin.alarm.recycler.AlarmRecyclerAdapter;
-
-import java.util.Calendar;
+import com.example.pavin.alarm.view.recycler.AlarmRecyclerAdapter;
 
 public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, MainView {
 
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
         attachPresenter();
-        adapter = new AlarmRecyclerAdapter(presenter);
+        adapter = new AlarmRecyclerAdapter(presenter.getAlarms(), presenter);
         rvAlarms.setAdapter(adapter);
     }
 

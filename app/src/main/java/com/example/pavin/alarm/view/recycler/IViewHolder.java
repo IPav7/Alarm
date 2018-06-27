@@ -1,4 +1,4 @@
-package com.example.pavin.alarm.recycler;
+package com.example.pavin.alarm.view.recycler;
 
 interface IViewHolder {
 
