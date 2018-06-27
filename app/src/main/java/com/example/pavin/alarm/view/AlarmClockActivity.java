@@ -89,10 +89,9 @@ public class AlarmClockActivity extends AppCompatActivity {
     }
 
     private void stopPlayer() {
-        if(mediaPlayer != null && mediaPlayer.isPlaying()) {
+        if(mediaPlayer != null && mediaPlayer.isPlaying())
             mediaPlayer.stop();
-            setRepeat();
-        }
+        setRepeat();
         sayTime();
     }
 
@@ -104,10 +103,8 @@ public class AlarmClockActivity extends AppCompatActivity {
     };
 
     private void setRepeat(){
-        if(alarm != null) {
-            if(!alarm.isOneTime())
+        if(alarm != null && !alarm.isOneTime())
                 App.setAlarm(alarm);
-        }
     }
 
     private void releaseMP(){
@@ -127,9 +124,8 @@ public class AlarmClockActivity extends AppCompatActivity {
     }
 
     private boolean checkGoogleTTS() {
-        PackageManager pm = getPackageManager();
         try {
-            pm.getPackageInfo(googleTTSPackage, PackageManager.GET_ACTIVITIES);
+            getPackageManager().getPackageInfo(googleTTSPackage, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
         }

@@ -22,24 +22,22 @@ public class App extends Application {
     private static App INSTANCE;
     private static final String DATABASE_NAME = "database";
     private AlarmDatabase alarmDatabase;
-    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        alarmDatabase = Room.databaseBuilder(getApplicationContext(), AlarmDatabase.class, DATABASE_NAME)
-                .build();
         INSTANCE = this;
-        context = getApplicationContext();
+        alarmDatabase = Room.databaseBuilder(INSTANCE.getApplicationContext(), AlarmDatabase.class, DATABASE_NAME)
+                .build();
     }
 
     public static void setAlarm(Alarm alarm){
-        Intent intent = new Intent(context, AlarmClockActivity.class);
+        Intent intent = new Intent(INSTANCE.getApplicationContext(), AlarmClockActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("ALARM", alarm);
         intent.putExtra("bundle", bundle);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(INSTANCE.getApplicationContext(), alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) INSTANCE.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         if(alarmManager != null) {
             if(alarm.isEnabled()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

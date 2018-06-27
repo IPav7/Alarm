@@ -152,7 +152,14 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        alarmPresenter.submitChanges();
+        switch (item.getItemId()) {
+            case R.id.addMenu:
+                alarmPresenter.submitChanges();
+                break;
+            case R.id.delAlarm:
+                alarmPresenter.deleteAlarm();
+                break;
+        }
         return true;
     }
 
