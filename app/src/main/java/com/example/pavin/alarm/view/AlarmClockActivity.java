@@ -1,5 +1,6 @@
 package com.example.pavin.alarm.view;
 
+import android.arch.persistence.room.util.StringUtil;
 import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -78,12 +79,15 @@ public class AlarmClockActivity extends AppCompatActivity {
         else Toast.makeText(this, "VSYO OCHEN' PLOHO", Toast.LENGTH_SHORT).show();
     }
 
-    private void sayTime(){
+    private void sayPhrase(){
         if(textToSpeech != null) {
+            String phrase = alarm.getPhrase();
+            if(phrase.isEmpty())
+                phrase = alarm.getHours() + " hours " + alarm.getMins() + " minutes";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(alarm.getHours() + " hours " + alarm.getMins() + " minutes", TextToSpeech.QUEUE_ADD, null, ENG_TAG);
+                textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null, ENG_TAG);
             } else {
-                textToSpeech.speak(alarm.getHours() + " hours " + alarm.getMins() + " minutes", TextToSpeech.QUEUE_ADD, null);
+                textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null);
             }
         }
     }
@@ -92,7 +96,8 @@ public class AlarmClockActivity extends AppCompatActivity {
         if(mediaPlayer != null && mediaPlayer.isPlaying())
             mediaPlayer.stop();
         setRepeat();
-        sayTime();
+        if(alarm.isTtsEnabled())
+            sayPhrase();
     }
 
     Runnable stopPlayer = new Runnable() {

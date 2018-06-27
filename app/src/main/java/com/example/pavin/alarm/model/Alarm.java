@@ -37,29 +37,47 @@ public class Alarm implements Serializable {
     private boolean enabled;
     private int hours, mins;
     private boolean[] days;
+    private boolean ttsEnabled;
+    private String phrase;
 
-    public Alarm(){//id = 0
-
-     /*   new Thread(new Runnable() {
-            @Override
-            public void run() {
-                id = App.getInstance().getAlarmDatabase().alarmDAO().getMaxID()+1;
-            }
-        }).start();*/
+    public Alarm(){
         sound = new Sound("Standard", null);
         enabled = true;
         hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         mins = Calendar.getInstance().get(Calendar.MINUTE);
         days = new boolean[7];
+        ttsEnabled = false;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
         this.hours = hours;
         this.mins = mins;
         this.days = days;
+        this.ttsEnabled = ttsEnabled;
+    }
+
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase) {
+        this(id, sound, enabled, hours, mins, days, ttsEnabled);
+        this.phrase = phrase;
+    }
+
+    public boolean isTtsEnabled() {
+        return ttsEnabled;
+    }
+
+    public void setTtsEnabled(boolean ttsEnabled) {
+        this.ttsEnabled = ttsEnabled;
+    }
+
+    public String getPhrase() {
+        return phrase;
+    }
+
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
     }
 
     public int getHours() {

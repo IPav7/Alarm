@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,6 +29,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private AlarmPresenter alarmPresenter;
     private TextView tvSoundName;
     private TimePicker picker;
+    private RadioGroup radioGroup;
+    private CheckedTextView checkedTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
             }
         });
         tvSoundName = findViewById(R.id.tvSoundName);
+        checkedTextView = findViewById(R.id.checkedTV);
+        radioGroup = findViewById(R.id.radioGroup);
         picker = findViewById(R.id.timePicker);
         picker.setIs24HourView(true);
         picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -154,6 +160,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenu:
+                if(checkedTextView.isChecked())
+                    alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
             case R.id.delAlarm:
@@ -161,6 +169,13 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 break;
         }
         return true;
+    }
+
+    private String getPhrase() {
+        String phrase = "";
+        if(radioGroup.getCheckedRadioButtonId() == R.id.rbPhrase)
+            phrase = "Text to check";
+        return phrase;
     }
 
     @Override
@@ -171,5 +186,15 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    public void onTTSClick(View view) {
+        boolean checked = ((CheckedTextView)view).isChecked();
+        ((CheckedTextView)view).setChecked(!checked);
+        if(!checked)
+        ((CheckedTextView)view).setCheckMarkDrawable(R.drawable.ic_check_black_24dp);
+        else ((CheckedTextView)view).setCheckMarkDrawable(android.R.color.transparent);
+        alarmPresenter.changeTTS(checked);
+        radioGroup.setEnabled(checked);
     }
 }

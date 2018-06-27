@@ -90,4 +90,40 @@
             android:id="@+id/imgSun"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <CheckedTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/TTS"
+            android:id="@+id/checkedTV"
+            android:checked="false"
+            android:onClick="onTTSClick"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal"
+        android:enabled="false"
+        android:layout_weight="1">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:checked="true"
+            android:id="@+id/rbTime"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phrase"
+            android:id="@+id/rbPhrase"/>
+    </RadioGroup>
+    </LinearLayout>
+
 </LinearLayout>

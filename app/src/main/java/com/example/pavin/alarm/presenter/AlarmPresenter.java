@@ -135,4 +135,11 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         return alarm.getSound();
     }
 
+    public void changeTTS(boolean checked) {
+        alarm.setTtsEnabled(checked);
+    }
+
+    public void changePhrase(String phrase) {
+        alarm.setPhrase(phrase);
+    }
 }
