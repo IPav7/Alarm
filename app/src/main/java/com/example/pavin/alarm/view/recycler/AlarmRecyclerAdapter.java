@@ -26,7 +26,6 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmRecyclerAdap
         if(mainPresenter != null){
             onAlarmItemClickListener = mainPresenter;
         }
-        else throw new ClassCastException("MainPresenter should implement OnSoundChooseListener");
     }
 
     @NonNull

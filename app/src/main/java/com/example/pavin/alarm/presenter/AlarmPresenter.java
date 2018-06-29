@@ -40,8 +40,10 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     }
 
     public void onSoundSelected(int position) {
-        alarm.setSound(soundList.get(position));
-        getView().setSoundName(alarm.getSound().getName());
+        if(position != -1) {
+            alarm.setSound(soundList.get(position));
+            getView().setSoundName(alarm.getSound().getName());
+        }
     }
 
     public void onClickChooseSound() {
@@ -52,6 +54,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         if(soundList == null)
             soundList = new ArrayList<>();
         else soundList.clear();
+        soundList.add(new Sound("Standard", null));
         String[] projection = { MediaStore.Audio.Media._ID,MediaStore.Audio.Media.TITLE};
         String selection = MediaStore.Audio.Media.MIME_TYPE + " = 'audio/mpeg'";
         Cursor audioCursor = getView().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);

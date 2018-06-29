@@ -32,6 +32,8 @@ public class Alarm implements Serializable {
     private boolean[] days;
     private boolean ttsEnabled;
     private String phrase;
+    private boolean snooze;
+    private int minsForSnooze;
 
     public Alarm(){
         sound = new Sound("Standard", null);
@@ -40,9 +42,10 @@ public class Alarm implements Serializable {
         mins = Calendar.getInstance().get(Calendar.MINUTE);
         days = new boolean[7];
         ttsEnabled = false;
+        snooze = false;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, boolean snooze, int minsForSnooze) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
@@ -50,10 +53,12 @@ public class Alarm implements Serializable {
         this.mins = mins;
         this.days = days;
         this.ttsEnabled = ttsEnabled;
+        this.snooze = snooze;
+        this.minsForSnooze = minsForSnooze;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase) {
-        this(id, sound, enabled, hours, mins, days, ttsEnabled);
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, boolean snooze, int minsForSnooze) {
+        this(id, sound, enabled, hours, mins, days, ttsEnabled, snooze, minsForSnooze);
         this.phrase = phrase;
     }
 
@@ -108,6 +113,11 @@ public class Alarm implements Serializable {
     public long getNextTrigger(){
         Calendar calendar = Calendar.getInstance();
         Calendar cal;
+        if(snooze){
+            cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
+            cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + minsForSnooze);
+            return cal.getTimeInMillis();
+        }
         if(isOneTime()) {
             cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
             if(calendar.compareTo(cal) > 0)
@@ -169,6 +179,22 @@ public class Alarm implements Serializable {
 
     public void setSound(Sound sound) {
         this.sound = sound;
+    }
+
+    public boolean isSnooze() {
+        return snooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        this.snooze = snooze;
+    }
+
+    public int getMinsForSnooze() {
+        return minsForSnooze;
+    }
+
+    public void setMinsForSnooze(int minsForSnooze) {
+        this.minsForSnooze = minsForSnooze;
     }
 
     @Override

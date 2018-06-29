@@ -26,7 +26,7 @@ import java.util.Locale;
 public class AlarmClockActivity extends AppCompatActivity {
 
     MediaPlayer mediaPlayer;
-    Button button;
+    Button btnSnooze;
     Alarm alarm;
     TextToSpeech textToSpeech;
     String googleTTSPackage = "com.google.android.tts";
@@ -36,13 +36,6 @@ public class AlarmClockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_clock);
-        button = findViewById(R.id.btnCancel);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopPlayer();
-            }
-        });
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
@@ -65,6 +58,8 @@ public class AlarmClockActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.e("EXCEPTION", e.getLocalizedMessage());
         }
+        btnSnooze = findViewById(R.id.btnSnooze);
+        btnSnooze.setText(String.format("Snooze for %d min", alarm.isSnooze() ? alarm.getMinsForSnooze() : 5));
         Handler handler = new Handler();
         handler.postDelayed(stopPlayer, 20000);
         if(checkGoogleTTS()) {
@@ -107,8 +102,8 @@ public class AlarmClockActivity extends AppCompatActivity {
     };
 
     private void setRepeat(){
-        if(alarm != null && !alarm.isOneTime())
-                App.setAlarm(alarm);
+        if(alarm != null)
+            App.setAlarm(alarm);
     }
 
     private void releaseMP(){
@@ -137,4 +132,18 @@ public class AlarmClockActivity extends AppCompatActivity {
         return false;
     }
 
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnCancel:
+                alarm.setSnooze(false);
+                break;
+            case R.id.btnSnooze:
+                if(!alarm.isSnooze())
+                    alarm.setSnooze(true);
+                if(alarm.getMinsForSnooze() == 0)
+                    alarm.setMinsForSnooze(5);
+                break;
+        }
+        stopPlayer();
+    }
 }
