@@ -8,14 +8,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:onClick="onClick"
-        android:id="@+id/btnCancel"/>
+        android:id="@+id/btnSnooze"
+        android:onClick="onClick"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:id="@+id/btnSnooze"/>
+        android:text="@string/cancel"
+        android:id="@+id/btnCancel"
+        android:onClick="onClick"/>
 
 </RelativeLayout>

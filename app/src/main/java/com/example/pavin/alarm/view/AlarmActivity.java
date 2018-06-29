@@ -41,6 +41,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private TimePicker picker;
     private RadioGroup radioGroup;
     private CheckedTextView checkedTextView;
+    //private String googleTTSPackage = "com.google.android.tts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,10 +235,19 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         finish();
     }
 
+//    private boolean checkGoogleTTS() {
+//        try {
+//            getPackageManager().getPackageInfo(googleTTSPackage, PackageManager.GET_ACTIVITIES);
+//            return true;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return false;
+//        }
+//    }
+
     public void onTTSClick(View view) {
-        boolean checked = ((CheckedTextView)view).isChecked();
-        ((CheckedTextView)view).setChecked(!checked);
-        if(!checked)
+        boolean checked = !((CheckedTextView)view).isChecked();
+        ((CheckedTextView)view).setChecked(checked);
+        if(checked)
         ((CheckedTextView)view).setCheckMarkDrawable(R.drawable.ic_check_black_24dp);
         else ((CheckedTextView)view).setCheckMarkDrawable(android.R.color.transparent);
         alarmPresenter.changeTTS(checked);

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.pavin.alarm.db.AlarmDatabase;
 import com.example.pavin.alarm.model.Alarm;
@@ -23,6 +24,7 @@ public class App extends Application {
     private static App INSTANCE;
     private static final String DATABASE_NAME = "database";
     private AlarmDatabase alarmDatabase;
+    public static final String KEY_ALARM = "key_alarm", KEY_BUNDLE = "key_bundle";
 
     @Override
     public void onCreate() {
@@ -35,8 +37,8 @@ public class App extends Application {
     public static void setAlarm(Alarm alarm){
         Intent intent = new Intent(INSTANCE.getApplicationContext(), AlarmClockActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("ALARM", alarm);
-        intent.putExtra("bundle", bundle);
+        bundle.putSerializable(KEY_ALARM, alarm);
+        intent.putExtra(KEY_BUNDLE, bundle);
         PendingIntent pendingIntent = PendingIntent.getActivity(INSTANCE.getApplicationContext(), alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) INSTANCE.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         if(alarmManager != null) {
@@ -46,11 +48,12 @@ public class App extends Application {
                 } else {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getNextTrigger(), pendingIntent);
                 }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                Log.e("SETTING UP ALARM №" + alarm.getId() + " AT: ", sdf.format(new Date(alarm.getNextTrigger())));
+                Toast.makeText(INSTANCE.getApplicationContext(), sdf.format(new Date(alarm.getNextTrigger())), Toast.LENGTH_LONG).show();
             }
             else alarmManager.cancel(pendingIntent);
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
-        Log.e("SETTING UP ALARM №" + alarm.getId() + " AT: ", sdf.format(new Date(alarm.getNextTrigger())));
     }
 
     public static App getInstance(){
