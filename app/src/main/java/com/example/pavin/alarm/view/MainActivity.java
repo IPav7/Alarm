@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
 
     @Override
     public void showAlarms(){
+        findViewById(R.id.tvNoAlarm).setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.tvToCreate).setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
         adapter.notifyDataSetChanged();
     }
 

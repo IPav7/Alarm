@@ -13,14 +13,13 @@
         <TimePicker
             android:id="@+id/timePicker"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5" />
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner" />
 
         <RelativeLayout
             android:id="@+id/rlSound"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tvaSound"
@@ -42,8 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -105,8 +103,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <CheckedTextView

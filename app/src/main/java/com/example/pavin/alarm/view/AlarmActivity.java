@@ -42,7 +42,6 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private TimePicker picker;
     private RadioGroup radioGroup;
     private CheckedTextView checkedTextView;
-    private TextView tvVolume;
     private SeekBar seekBarVolume;
     //private String googleTTSPackage = "com.google.android.tts";
 
@@ -68,7 +67,6 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 alarmPresenter.changeTime(i, i1);
             }
         });
-        tvVolume = findViewById(R.id.tvVolume);
         seekBarVolume = findViewById(R.id.seekBarVolume);
         seekBarVolume.setOnSeekBarChangeListener(this);
         attachPresenter();
@@ -241,15 +239,6 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public void finishActivity() {
         finish();
     }
-
-//    private boolean checkGoogleTTS() {
-//        try {
-//            getPackageManager().getPackageInfo(googleTTSPackage, PackageManager.GET_ACTIVITIES);
-//            return true;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            return false;
-//        }
-//    }
 
     public void onTTSClick(View view) {
         boolean checked = !((CheckedTextView) view).isChecked();

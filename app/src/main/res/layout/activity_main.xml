@@ -6,17 +6,38 @@
     tools:context=".view.MainActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvAlarms"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvAlarms"/>
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fabAdd"
-        android:src="@drawable/ic_add_black_24dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_add_black_24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/tvNoAlarm"
+        android:textSize="28sp"
+        android:text="@string/no_alarm_clocks"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNoAlarm"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tvToCreate"
+        android:textSize="16sp"
+        android:text="@string/create_new"
+        android:visibility="invisible"/>
+
 
 </RelativeLayout>

@@ -16,4 +16,6 @@
     <string name="time">Time</string>
     <string name="phrase">Phrase</string>
     <string name="volume">Volume</string>
+    <string name="no_alarm_clocks">No alarm clocks</string>
+    <string name="create_new">Create new by tapping +</string>
 </resources>
