@@ -31,6 +31,7 @@ public class MainPresenter extends BasePresenter<MainView> implements AlarmRecyc
     }
 
     public void stateChanged(final Alarm alarm) {
+        alarm.setEnabled(!alarm.isEnabled());
         new Thread(new Runnable() {
             @Override
             public void run() {

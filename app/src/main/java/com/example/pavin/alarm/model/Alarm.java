@@ -16,12 +16,12 @@ import java.util.List;
 public class Alarm implements Serializable {
 
     public static int MONDAY = 0,
-                      TUESDAY = 1,
-                      WEDNESDAY = 2,
-                      THURSDAY = 3,
-                      FRIDAY = 4,
-                      SATURDAY = 5,
-                      SUNDAY = 6;
+            TUESDAY = 1,
+            WEDNESDAY = 2,
+            THURSDAY = 3,
+            FRIDAY = 4,
+            SATURDAY = 5,
+            SUNDAY = 6;
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -32,20 +32,19 @@ public class Alarm implements Serializable {
     private boolean[] days;
     private boolean ttsEnabled;
     private String phrase;
-    private boolean snooze;
-    private int minsForSnooze;
+    private float volume;
 
-    public Alarm(){
+    public Alarm() {
         sound = new Sound("Standard", null);
         enabled = true;
         hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         mins = Calendar.getInstance().get(Calendar.MINUTE);
         days = new boolean[7];
         ttsEnabled = false;
-        snooze = false;
+        volume = 1;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, boolean snooze, int minsForSnooze) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
@@ -53,12 +52,11 @@ public class Alarm implements Serializable {
         this.mins = mins;
         this.days = days;
         this.ttsEnabled = ttsEnabled;
-        this.snooze = snooze;
-        this.minsForSnooze = minsForSnooze;
+        this.volume = volume;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, boolean snooze, int minsForSnooze) {
-        this(id, sound, enabled, hours, mins, days, ttsEnabled, snooze, minsForSnooze);
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, float volume) {
+        this(id, sound, enabled, hours, mins, days, ttsEnabled, volume);
         this.phrase = phrase;
     }
 
@@ -102,29 +100,24 @@ public class Alarm implements Serializable {
         this.days = days;
     }
 
-    public boolean isEnabledInDay(int day){
+    public boolean isEnabledInDay(int day) {
         return days[day];
     }
 
-    public void changeDayState(int day){
+    public void changeDayState(int day) {
         days[day] = !days[day];
     }
 
-    public long getNextTrigger(){
+
+    public long getNextTrigger() {
         Calendar calendar = Calendar.getInstance();
         Calendar cal;
-        if(snooze){
+        if (isOneTime()) {
             cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
-            cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + minsForSnooze);
-            return cal.getTimeInMillis();
-        }
-        if(isOneTime()) {
-            cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
-            if(calendar.compareTo(cal) > 0)
+            if (calendar.compareTo(cal) > 0)
                 cal.setTimeInMillis(cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY);
             return cal.getTimeInMillis();
-        }
-        else{
+        } else {
             List<Calendar> list = new LinkedList<>();
             for (int i = 0; i < days.length; i++) {
                 if (days[i]) {
@@ -149,7 +142,7 @@ public class Alarm implements Serializable {
         return cal;
     }
 
-    public boolean isOneTime(){
+    public boolean isOneTime() {
         for (boolean b :
                 days) {
             if (b) return false;
@@ -181,31 +174,11 @@ public class Alarm implements Serializable {
         this.sound = sound;
     }
 
-    public boolean isSnooze() {
-        return snooze;
+    public float getVolume() {
+        return volume;
     }
 
-    public void setSnooze(boolean snooze) {
-        this.snooze = snooze;
-    }
-
-    public int getMinsForSnooze() {
-        return minsForSnooze;
-    }
-
-    public void setMinsForSnooze(int minsForSnooze) {
-        this.minsForSnooze = minsForSnooze;
-    }
-
-    @Override
-    public String toString() {
-        return "Alarm{" +
-                "id=" + id +
-                ", sound='" + sound.getName() + '\'' +
-                ", enabled=" + enabled +
-                ", hours=" + hours +
-                ", mins=" + mins +
-                ", days=" + Arrays.toString(days) +
-                '}';
+    public void setVolume(float volume) {
+        this.volume = volume;
     }
 }

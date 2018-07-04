@@ -23,7 +23,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmRecyclerAdap
 
     public AlarmRecyclerAdapter(List<Alarm> alarms, MainPresenter mainPresenter) {
         this.alarms = alarms;
-        if(mainPresenter != null){
+        if (mainPresenter != null) {
             onAlarmItemClickListener = mainPresenter;
         }
     }
@@ -38,28 +38,36 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmRecyclerAdap
     public void onBindViewHolder(@NonNull AlarmViewHolder alarmViewHolder, int i) {
         alarmViewHolder.getSwEnabled().setChecked(alarms.get(i).isEnabled());
         alarmViewHolder.getTvSound().setText(alarms.get(i).getSound().getName());
-        String time = alarms.get(i).getHours() + ":" + alarms.get(i).getMins();
+        int hours = alarms.get(i).getHours();
+        int mins = alarms.get(i).getMins();
+        String time = hours + ":";
+        if (alarms.get(i).getHours() < 10)
+            time = "0" + time;
+        if (mins < 10)
+            time = time + "0" + mins;
+        else time = time + mins;
         alarmViewHolder.getTvTime().setText(time);
     }
 
     @Override
     public int getItemCount() {
-        if(alarms != null)
-        return alarms.size();
+        if (alarms != null)
+            return alarms.size();
         else return 0;
     }
 
-    public interface OnAlarmItemClickListener{
+    public interface OnAlarmItemClickListener {
         void onAlarmItemClick(Alarm alarm);
+
         void stateChanged(Alarm alarm);
     }
 
-    public class AlarmViewHolder extends RecyclerView.ViewHolder{
+    public class AlarmViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView tvTime, tvSound;
         private final Switch swEnabled;
 
-        AlarmViewHolder(View view){
+        AlarmViewHolder(View view) {
             super(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

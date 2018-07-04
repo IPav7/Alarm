@@ -25,23 +25,24 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                alarm.setId(App.getInstance().getAlarmDatabase().alarmDAO().getMaxID()+1);
+                alarm.setId(App.getInstance().getAlarmDatabase().alarmDAO().getMaxID() + 1);
             }
         }).start();
     }
 
-    public AlarmPresenter(Alarm alarm){
+    public AlarmPresenter(Alarm alarm) {
         this.alarm = alarm;
     }
 
-    public void viewIsReady(){
+    public void viewIsReady() {
         getView().setTimeToPicker(alarm.getHours(), alarm.getMins());
         getView().setDaysImages(alarm.getDays());
         getView().setSoundName(alarm.getSound().getName());
+        getView().setVolume((int) (alarm.getVolume() * 10));
     }
 
     public void onSoundSelected(int position) {
-        if(position != -1) {
+        if (position != -1) {
             alarm.setSound(soundList.get(position));
             getView().setSoundName(alarm.getSound().getName());
         }
@@ -52,21 +53,21 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     }
 
     public ArrayList<Sound> getAdapterData() {
-        if(soundList == null)
+        if (soundList == null)
             soundList = new ArrayList<>();
         else soundList.clear();
         soundList.add(new Sound("Standard", null));
-        String[] projection = { MediaStore.Audio.Media._ID,MediaStore.Audio.Media.TITLE};
+        String[] projection = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE};
         String selection = MediaStore.Audio.Media.MIME_TYPE + " = 'audio/mpeg'";
-        Cursor audioCursor = getView().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
-        if(audioCursor != null){
-            if(audioCursor.moveToFirst()){
-                do{
+        Cursor audioCursor = getView().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, MediaStore.Audio.Media.TITLE);
+        if (audioCursor != null) {
+            if (audioCursor.moveToFirst()) {
+                do {
                     Uri soundURI = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                           audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                            audioCursor.getInt(audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
                     int columnIndex = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
                     soundList.add(new Sound(audioCursor.getString(columnIndex), soundURI.toString()));
-                }while(audioCursor.moveToNext());
+                } while (audioCursor.moveToNext());
             }
             audioCursor.close();
         }
@@ -84,7 +85,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         getView().finishActivity();
     }
 
-    public void deleteAlarm(){
+    public void deleteAlarm() {
         alarm.setEnabled(false);
         App.setAlarm(alarm);
         new Thread(new Runnable() {
@@ -97,7 +98,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     }
 
     public void onDayClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.imgMon:
                 alarm.changeDayState(Alarm.MONDAY);
                 getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.MONDAY));
@@ -134,7 +135,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         alarm.setMins(mins);
     }
 
-    public Sound getSelectedAudio(){
+    public Sound getSelectedAudio() {
         return alarm.getSound();
     }
 
@@ -144,5 +145,9 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
 
     public void changePhrase(String phrase) {
         alarm.setPhrase(phrase);
+    }
+
+    public void setVolume(int volume) {
+        alarm.setVolume(0.1f * volume);
     }
 }

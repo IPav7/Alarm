@@ -22,6 +22,7 @@ import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -32,7 +33,7 @@ import com.example.pavin.alarm.presenter.AlarmPresenter;
 
 import java.util.ArrayList;
 
-public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView {
+public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG_SOUND = "TAG_SOUND";
     private static final int REQUEST_CODE_READ_STORAGE = 100;
@@ -41,6 +42,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private TimePicker picker;
     private RadioGroup radioGroup;
     private CheckedTextView checkedTextView;
+    private TextView tvVolume;
+    private SeekBar seekBarVolume;
     //private String googleTTSPackage = "com.google.android.tts";
 
     @Override
@@ -65,10 +68,13 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 alarmPresenter.changeTime(i, i1);
             }
         });
+        tvVolume = findViewById(R.id.tvVolume);
+        seekBarVolume = findViewById(R.id.seekBarVolume);
+        seekBarVolume.setOnSeekBarChangeListener(this);
         attachPresenter();
     }
 
-    public void onDayClick(View view){
+    public void onDayClick(View view) {
         alarmPresenter.onDayClick(view);
     }
 
@@ -86,8 +92,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     @Override
     public void changeDayImage(View view, boolean enabledInDay) {
         if (enabledInDay)
-            ((ImageView)view).setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
-        else ((ImageView)view).setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
+            ((ImageView) view).setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
+        else ((ImageView) view).setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
     }
 
 
@@ -96,8 +102,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             picker.setHour(hours);
             picker.setMinute(mins);
-        }
-        else{
+        } else {
             picker.setCurrentHour(hours);
             picker.setCurrentMinute(mins);
         }
@@ -105,13 +110,12 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public void attachPresenter() {
-        alarmPresenter = (AlarmPresenter)getLastCustomNonConfigurationInstance();
-        if(alarmPresenter == null){
-            if(getIntent().getExtras() == null) {
+        alarmPresenter = (AlarmPresenter) getLastCustomNonConfigurationInstance();
+        if (alarmPresenter == null) {
+            if (getIntent().getExtras() == null) {
                 alarmPresenter = new AlarmPresenter();
-            }
-            else{
-                alarmPresenter = new AlarmPresenter((Alarm)getIntent().getExtras().getSerializable("ALARM"));
+            } else {
+                alarmPresenter = new AlarmPresenter((Alarm) getIntent().getExtras().getSerializable("ALARM"));
             }
         }
         alarmPresenter.bindView(this);
@@ -135,6 +139,11 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     }
 
     @Override
+    public void setVolume(int volume) {
+        seekBarVolume.setProgress(volume);
+    }
+
+    @Override
     public void onSoundSelected(int position) {
         alarmPresenter.onSoundSelected(position);
     }
@@ -146,23 +155,21 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public void showSoundDialog() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
             showDialog();
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_STORAGE);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE_READ_STORAGE:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showDialog();
-                }
-                else {
+                } else {
                     showAccessDenied();
                 }
                 break;
@@ -181,7 +188,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 }).show();
     }
 
-    private void showDialog(){
+    private void showDialog() {
         DialogFragment dialogSound = new DialogSound();
         dialogSound.show(getSupportFragmentManager(), TAG_SOUND);
     }
@@ -207,7 +214,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenu:
-                if(checkedTextView.isChecked())
+                if (checkedTextView.isChecked())
                     alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
@@ -220,7 +227,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     private String getPhrase() {
         String phrase = "";
-        if(radioGroup.getCheckedRadioButtonId() == R.id.rbPhrase)
+        if (radioGroup.getCheckedRadioButtonId() == R.id.rbPhrase)
             phrase = "Text to check";
         return phrase;
     }
@@ -245,12 +252,27 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 //    }
 
     public void onTTSClick(View view) {
-        boolean checked = !((CheckedTextView)view).isChecked();
-        ((CheckedTextView)view).setChecked(checked);
-        if(checked)
-        ((CheckedTextView)view).setCheckMarkDrawable(R.drawable.ic_check_black_24dp);
-        else ((CheckedTextView)view).setCheckMarkDrawable(android.R.color.transparent);
+        boolean checked = !((CheckedTextView) view).isChecked();
+        ((CheckedTextView) view).setChecked(checked);
+        if (checked)
+            ((CheckedTextView) view).setCheckMarkDrawable(R.drawable.ic_check_black_24dp);
+        else ((CheckedTextView) view).setCheckMarkDrawable(android.R.color.transparent);
         alarmPresenter.changeTTS(checked);
         radioGroup.setEnabled(checked);
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        alarmPresenter.setVolume(i);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

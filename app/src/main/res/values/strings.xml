@@ -15,4 +15,5 @@
     <string name="TTS">Text-To-Speech</string>
     <string name="time">Time</string>
     <string name="phrase">Phrase</string>
+    <string name="volume">Volume</string>
 </resources>

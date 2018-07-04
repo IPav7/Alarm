@@ -1,130 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/llAlarm"
-    tools:context=".view.AlarmActivity">
+    android:layout_height="match_parent">
 
-    <TimePicker
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/llAlarm"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/timePicker"
-        android:layout_weight="5"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/rlSound"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sound"
-            android:layout_marginStart="20dp"
-            android:id="@+id/tvaSound"
-            android:textSize="30sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/standard"
-            android:layout_marginStart="20dp"
-            android:layout_below="@id/tvaSound"
-            android:id="@+id/tvSoundName"
-            android:textSize="20sp"/>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/monday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgMon"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/tuesday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgTue"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/wednesday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgWed"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/thursday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgThu"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/friday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgFri"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/saturday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgSat"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-            android:contentDescription="@string/sunday"
-            android:onClick="onDayClick"
-            android:id="@+id/imgSun"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1">
+        tools:context=".view.AlarmActivity">
 
-        <CheckedTextView
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5" />
+
+        <RelativeLayout
+            android:id="@+id/rlSound"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tvaSound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/sound"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/tvSoundName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvaSound"
+                android:layout_marginStart="20dp"
+                android:text="@string/standard"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/TTS"
-            android:id="@+id/checkedTV"
-            android:checked="false"
-            android:onClick="onTTSClick"/>
+            android:orientation="horizontal">
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:id="@+id/radioGroup"
-        android:orientation="horizontal"
-        android:enabled="false"
-        android:layout_weight="1">
-        <RadioButton
+            <ImageView
+                android:id="@+id/imgMon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/monday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgTue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/tuesday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgWed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/wednesday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgThu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/thursday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgFri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/friday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgSat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/saturday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgSun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/sunday"
+                android:onClick="onDayClick"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <CheckedTextView
+                android:id="@+id/checkedTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:checked="false"
+                android:onClick="onTTSClick"
+                android:text="@string/TTS" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/time" />
+
+                <RadioButton
+                    android:id="@+id/rbPhrase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phrase" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time"
-            android:checked="true"
-            android:id="@+id/rbTime"/>
-        <RadioButton
-            android:layout_width="wrap_content"
+            android:text="@string/volume" />
+
+        <SeekBar
+            android:id="@+id/seekBarVolume"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/phrase"
-            android:id="@+id/rbPhrase"/>
-    </RadioGroup>
+            android:layout_marginTop="8dp"
+            android:max="10"
+            android:progress="10" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

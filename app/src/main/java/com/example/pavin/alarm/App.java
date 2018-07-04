@@ -50,7 +50,7 @@ public class App extends Application {
                 }
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 Log.e("SETTING UP ALARM №" + alarm.getId() + " AT: ", sdf.format(new Date(alarm.getNextTrigger())));
-                Toast.makeText(INSTANCE.getApplicationContext(), sdf.format(new Date(alarm.getNextTrigger())), Toast.LENGTH_LONG).show();
+            //    Toast.makeText(INSTANCE.getApplicationContext(), sdf.format(new Date(alarm.getNextTrigger())), Toast.LENGTH_LONG).show();
             }
             else alarmManager.cancel(pendingIntent);
         }

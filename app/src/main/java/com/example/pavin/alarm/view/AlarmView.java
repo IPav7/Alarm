@@ -9,6 +9,8 @@ public interface AlarmView extends BaseView{
 
     void setSoundName(String sound);
 
+    void setVolume(int volume);
+
     void setTimeToPicker(int hours, int mins);
 
     ContentResolver getContentResolver();
