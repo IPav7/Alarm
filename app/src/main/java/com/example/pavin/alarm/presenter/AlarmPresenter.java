@@ -39,6 +39,8 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         getView().setDaysImages(alarm.getDays());
         getView().setSoundName(alarm.getSound().getName());
         getView().setVolume((int) (alarm.getVolume() * 10));
+        getView().setTTSSwitch(alarm.isTtsEnabled(), alarm.isSayTime());
+        getView().setPhraseToET(alarm.getPhrase());
     }
 
     public void onSoundSelected(int position) {
@@ -118,6 +120,10 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         }
     }
 
+    public void setSayTime(boolean isSayTime){
+        alarm.setSayTime(isSayTime);
+    }
+
     public void changeTime(int hours, int mins) {
         alarm.setHours(hours);
         alarm.setMins(mins);
@@ -137,5 +143,9 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
 
     public void setVolume(int volume) {
         alarm.setVolume(0.1f * volume);
+    }
+
+    public void previewAlarm() {
+
     }
 }

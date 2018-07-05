@@ -31,6 +31,7 @@ public class Alarm implements Serializable {
     private int hours, mins;
     private boolean[] days;
     private boolean ttsEnabled;
+    private boolean sayTime;
     private String phrase;
     private float volume;
 
@@ -42,6 +43,7 @@ public class Alarm implements Serializable {
         days = new boolean[7];
         ttsEnabled = false;
         volume = 1;
+        phrase = "";
     }
 
     public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume) {
@@ -148,6 +150,14 @@ public class Alarm implements Serializable {
             if (b) return false;
         }
         return true;
+    }
+
+    public boolean isSayTime() {
+        return sayTime;
+    }
+
+    public void setSayTime(boolean sayTime) {
+        this.sayTime = sayTime;
     }
 
     public boolean isEnabled() {

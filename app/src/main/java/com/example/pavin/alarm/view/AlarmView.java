@@ -20,4 +20,8 @@ public interface AlarmView extends BaseView{
     void changeDayImage(int pos, boolean enabledInDay);
 
     void setDaysImages(boolean[] days);
+
+    void setTTSSwitch(boolean enabled, boolean isTime);
+
+    void setPhraseToET(String phrase);
 }

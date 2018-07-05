@@ -20,10 +20,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,14 +40,16 @@ import java.util.ArrayList;
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG_SOUND = "TAG_SOUND";
+    private static final String SAVE_PHRASE = "savedPhrase";
     private static final int REQUEST_CODE_READ_STORAGE = 100;
     private AlarmPresenter alarmPresenter;
     private TextView tvSoundName;
     private TimePicker picker;
     private RadioGroup radioGroup;
-    private CheckedTextView checkedTextView;
+    private Switch swTTS;
     private SeekBar seekBarVolume;
     private ImageView[] imgDays;
+    private EditText etPhrase;
     //private String googleTTSPackage = "com.google.android.tts";
 
     @Override
@@ -53,10 +57,23 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        RelativeLayout rlSound = findViewById(R.id.rlSound);
+        rlSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmPresenter.onClickChooseSound();
+            }
+        });
         tvSoundName = findViewById(R.id.tvSoundName);
-        checkedTextView = findViewById(R.id.checkedTV);
+        etPhrase = findViewById(R.id.etPhrase);
+        swTTS = findViewById(R.id.swTTS);
         radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                alarmPresenter.setSayTime(i == R.id.rbTime);
+            }
+        });
         picker = findViewById(R.id.timePicker);
         picker.setIs24HourView(true);
         picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -213,20 +230,18 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenu:
-                if (checkedTextView.isChecked())
+                if (swTTS.isChecked())
                     alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
-            default: finishActivity();
+            default:
+                finishActivity();
         }
         return true;
     }
 
     private String getPhrase() {
-        String phrase = "";
-        if (radioGroup.getCheckedRadioButtonId() == R.id.rbPhrase)
-            phrase = "Text to check";
-        return phrase;
+        return etPhrase.getText().toString();
     }
 
     @Override
@@ -240,18 +255,28 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     }
 
     public void onTTSClick(View view) {
-        boolean checked = !((CheckedTextView) view).isChecked();
-        ((CheckedTextView) view).setChecked(checked);
-        if (checked)
-            ((CheckedTextView) view).setCheckMarkDrawable(R.drawable.ic_check_white_24dp);
-        else ((CheckedTextView) view).setCheckMarkDrawable(android.R.color.transparent);
+        if (view.getId() == R.id.tvTTS)
+            swTTS.setChecked(!swTTS.isChecked());
+        boolean checked = swTTS.isChecked();
         alarmPresenter.changeTTS(checked);
-        radioGroup.setEnabled(checked);
+        radioGroup.setVisibility(checked ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void setTTSSwitch(boolean enabled, boolean isTime) {
+        radioGroup.check(isTime ? R.id.rbTime : R.id.rbPhrase);
+        radioGroup.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        swTTS.setChecked(enabled);
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         alarmPresenter.setVolume(i);
+    }
+
+    @Override
+    public void setPhraseToET(String phrase) {
+        etPhrase.setText(phrase);
     }
 
     @Override
@@ -262,5 +287,15 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    public void onPreviewClick(View view) {
+        alarmPresenter.previewAlarm();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        alarmPresenter.changePhrase(etPhrase.getText().toString());
     }
 }
