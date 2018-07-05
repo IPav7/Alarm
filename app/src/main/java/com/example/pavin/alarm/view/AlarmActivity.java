@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.model.Alarm;
@@ -43,19 +45,15 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private RadioGroup radioGroup;
     private CheckedTextView checkedTextView;
     private SeekBar seekBarVolume;
+    private ImageView[] imgDays;
     //private String googleTTSPackage = "com.google.android.tts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        RelativeLayout rlSound = findViewById(R.id.rlSound);
-        rlSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alarmPresenter.onClickChooseSound();
-            }
-        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         tvSoundName = findViewById(R.id.tvSoundName);
         checkedTextView = findViewById(R.id.checkedTV);
         radioGroup = findViewById(R.id.radioGroup);
@@ -69,6 +67,15 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         });
         seekBarVolume = findViewById(R.id.seekBarVolume);
         seekBarVolume.setOnSeekBarChangeListener(this);
+        imgDays = new ImageView[]{
+                findViewById(R.id.imgMon),
+                findViewById(R.id.imgTue),
+                findViewById(R.id.imgWed),
+                findViewById(R.id.imgThu),
+                findViewById(R.id.imgFri),
+                findViewById(R.id.imgSat),
+                findViewById(R.id.imgSun)
+        };
         attachPresenter();
     }
 
@@ -78,20 +85,14 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
 
     @Override
     public void setDaysImages(boolean[] days) {
-        changeDayImage(findViewById(R.id.imgMon), days[Alarm.MONDAY]);
-        changeDayImage(findViewById(R.id.imgTue), days[Alarm.TUESDAY]);
-        changeDayImage(findViewById(R.id.imgWed), days[Alarm.WEDNESDAY]);
-        changeDayImage(findViewById(R.id.imgThu), days[Alarm.THURSDAY]);
-        changeDayImage(findViewById(R.id.imgFri), days[Alarm.FRIDAY]);
-        changeDayImage(findViewById(R.id.imgSat), days[Alarm.SATURDAY]);
-        changeDayImage(findViewById(R.id.imgSun), days[Alarm.SUNDAY]);
+        for (int i = 0; i < days.length; i++) {
+            changeDayImage(i, days[i]);
+        }
     }
 
     @Override
-    public void changeDayImage(View view, boolean enabledInDay) {
-        if (enabledInDay)
-            ((ImageView) view).setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
-        else ((ImageView) view).setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
+    public void changeDayImage(int pos, boolean enabledInDay) {
+        imgDays[pos].setSelected(enabledInDay);
     }
 
 
@@ -216,6 +217,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                     alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
+            default: finishActivity();
         }
         return true;
     }
@@ -241,7 +243,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         boolean checked = !((CheckedTextView) view).isChecked();
         ((CheckedTextView) view).setChecked(checked);
         if (checked)
-            ((CheckedTextView) view).setCheckMarkDrawable(R.drawable.ic_check_black_24dp);
+            ((CheckedTextView) view).setCheckMarkDrawable(R.drawable.ic_check_white_24dp);
         else ((CheckedTextView) view).setCheckMarkDrawable(android.R.color.transparent);
         alarmPresenter.changeTTS(checked);
         radioGroup.setEnabled(checked);

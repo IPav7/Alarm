@@ -89,31 +89,31 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         switch (view.getId()) {
             case R.id.imgMon:
                 alarm.changeDayState(Alarm.MONDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.MONDAY));
+                getView().changeDayImage(Alarm.MONDAY, alarm.isEnabledInDay(Alarm.MONDAY));
                 break;
             case R.id.imgTue:
                 alarm.changeDayState(Alarm.TUESDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.TUESDAY));
+                getView().changeDayImage(Alarm.TUESDAY, alarm.isEnabledInDay(Alarm.TUESDAY));
                 break;
             case R.id.imgWed:
                 alarm.changeDayState(Alarm.WEDNESDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.WEDNESDAY));
+                getView().changeDayImage(Alarm.WEDNESDAY, alarm.isEnabledInDay(Alarm.WEDNESDAY));
                 break;
             case R.id.imgThu:
                 alarm.changeDayState(Alarm.THURSDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.THURSDAY));
+                getView().changeDayImage(Alarm.THURSDAY, alarm.isEnabledInDay(Alarm.THURSDAY));
                 break;
             case R.id.imgFri:
                 alarm.changeDayState(Alarm.FRIDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.FRIDAY));
+                getView().changeDayImage(Alarm.FRIDAY, alarm.isEnabledInDay(Alarm.FRIDAY));
                 break;
             case R.id.imgSat:
                 alarm.changeDayState(Alarm.SATURDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.SATURDAY));
+                getView().changeDayImage(Alarm.SATURDAY, alarm.isEnabledInDay(Alarm.SATURDAY));
                 break;
             case R.id.imgSun:
                 alarm.changeDayState(Alarm.SUNDAY);
-                getView().changeDayImage(view, alarm.isEnabledInDay(Alarm.SUNDAY));
+                getView().changeDayImage(Alarm.SUNDAY, alarm.isEnabledInDay(Alarm.SUNDAY));
                 break;
         }
     }

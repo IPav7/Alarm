@@ -16,6 +16,76 @@
             android:layout_height="wrap_content"
             android:timePickerMode="spinner" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:weightSum="7"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgMon"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/monday"
+                android:onClick="onDayClick"
+                android:src="@drawable/monday_image" />
+
+            <ImageView
+                android:id="@+id/imgTue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/tuesday"
+                android:onClick="onDayClick"
+                android:src="@drawable/tuesday_image" />
+
+            <ImageView
+                android:id="@+id/imgWed"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/wednesday"
+                android:onClick="onDayClick"
+                android:src="@drawable/wednesday_image" />
+
+            <ImageView
+                android:id="@+id/imgThu"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/thursday"
+                android:onClick="onDayClick"
+                android:src="@drawable/thursday_image" />
+
+            <ImageView
+                android:id="@+id/imgFri"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/friday"
+                android:onClick="onDayClick"
+                android:src="@drawable/friday_image" />
+
+            <ImageView
+                android:id="@+id/imgSat"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/saturday"
+                android:onClick="onDayClick"
+                android:src="@drawable/saturday_image" />
+
+            <ImageView
+                android:id="@+id/imgSun"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/sunday"
+                android:onClick="onDayClick"
+                android:src="@drawable/sunday_image" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rlSound"
             android:layout_width="match_parent"
@@ -38,68 +108,6 @@
                 android:text="@string/standard"
                 android:textSize="20sp" />
         </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imgMon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/monday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgTue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/tuesday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgWed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/wednesday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgThu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/thursday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgFri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/friday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgSat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/saturday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imgSun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/sunday"
-                android:onClick="onDayClick"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

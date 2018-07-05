@@ -17,7 +17,7 @@ public interface AlarmView extends BaseView{
 
     void finishActivity();
 
-    void changeDayImage(View view, boolean enabledInDay);
+    void changeDayImage(int pos, boolean enabledInDay);
 
     void setDaysImages(boolean[] days);
 }

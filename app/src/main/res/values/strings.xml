@@ -19,4 +19,5 @@
     <string name="no_alarm_clocks">No alarm clocks</string>
     <string name="create_new">Create new by tapping +</string>
     <string name="once">Once</string>
+    <string name="repeats">Repeats</string>
 </resources>
