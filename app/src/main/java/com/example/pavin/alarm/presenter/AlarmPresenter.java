@@ -85,18 +85,6 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         getView().finishActivity();
     }
 
-    public void deleteAlarm() {
-        alarm.setEnabled(false);
-        App.setAlarm(alarm);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getAlarmDAO().delete(alarm);
-            }
-        }).start();
-        getView().finishActivity();
-    }
-
     public void onDayClick(View view) {
         switch (view.getId()) {
             case R.id.imgMon:

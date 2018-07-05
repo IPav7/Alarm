@@ -41,6 +41,19 @@ public class MainPresenter extends BasePresenter<MainView> implements AlarmRecyc
         App.setAlarm(alarm);
     }
 
+    public void deleteAlarm(final Alarm alarm) {
+        alarm.setEnabled(false);
+        App.setAlarm(alarm);
+        alarms.remove(alarm);
+        getView().showAlarms();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getAlarmDAO().delete(alarm);
+            }
+        }).start();
+    }
+
     @Override
     public void onAlarmItemClick(Alarm alarm) {
         getView().startEditActivity(alarm);

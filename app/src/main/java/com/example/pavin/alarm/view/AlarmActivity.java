@@ -216,9 +216,6 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                     alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
-            case R.id.delAlarm:
-                alarmPresenter.deleteAlarm();
-                break;
         }
         return true;
     }

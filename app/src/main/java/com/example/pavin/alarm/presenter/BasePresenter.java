@@ -2,6 +2,7 @@ package com.example.pavin.alarm.presenter;
 
 import com.example.pavin.alarm.db.AlarmDAO;
 import com.example.pavin.alarm.App;
+import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.view.BaseView;
 
 public class BasePresenter<V extends BaseView> {
@@ -32,4 +33,5 @@ public class BasePresenter<V extends BaseView> {
     protected AlarmDAO getAlarmDAO() {
         return alarmDAO;
     }
+
 }
