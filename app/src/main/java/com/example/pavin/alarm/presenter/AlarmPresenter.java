@@ -41,6 +41,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         getView().setVolume((int) (alarm.getVolume() * 10));
         getView().setTTSSwitch(alarm.isTtsEnabled(), alarm.isSayTime());
         getView().setPhraseToET(alarm.getPhrase());
+        getView().setSnoozeTime(alarm.getMinToSnooze());
     }
 
     public void onSoundSelected(int position) {
@@ -48,6 +49,10 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
             alarm.setSound(soundList.get(position));
             getView().setSoundName(alarm.getSound().getName());
         }
+    }
+
+    public void setSnoozeTime(int mins){
+        alarm.setMinToSnooze(mins);
     }
 
     public void onClickChooseSound() {
@@ -77,6 +82,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     }
 
     public void submitChanges() {
+        alarm.setSnooze(false);
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -34,6 +35,8 @@ public class Alarm implements Serializable {
     private boolean sayTime;
     private String phrase;
     private float volume;
+    private boolean snooze;
+    private int minToSnooze;
 
     public Alarm() {
         sound = new Sound("Standard", null);
@@ -44,9 +47,11 @@ public class Alarm implements Serializable {
         ttsEnabled = false;
         volume = 1;
         sayTime = false;
+        snooze = false;
+        minToSnooze = 5;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume, boolean sayTime) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume, boolean sayTime, boolean snooze, int minToSnooze) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
@@ -56,10 +61,12 @@ public class Alarm implements Serializable {
         this.ttsEnabled = ttsEnabled;
         this.volume = volume;
         this.sayTime = sayTime;
+        this.snooze = snooze;
+        this.minToSnooze = minToSnooze;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, float volume, boolean sayTime) {
-        this(id, sound, enabled, hours, mins, days, ttsEnabled, volume, sayTime);
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, float volume, boolean sayTime, boolean snooze, int minToSnooze) {
+        this(id, sound, enabled, hours, mins, days, ttsEnabled, volume, sayTime, snooze, minToSnooze);
         this.phrase = phrase;
     }
 
@@ -114,6 +121,11 @@ public class Alarm implements Serializable {
 
     public long getNextTrigger() {
         Calendar calendar = Calendar.getInstance();
+        if(snooze){
+            calendar.set(Calendar.SECOND, 0);
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + minToSnooze * 60 * 1000);
+            return calendar.getTimeInMillis();
+        }
         Calendar cal;
         if (isOneTime()) {
             cal = initCalendar(calendar.get(Calendar.DAY_OF_WEEK));
@@ -191,5 +203,21 @@ public class Alarm implements Serializable {
 
     public void setVolume(float volume) {
         this.volume = volume;
+    }
+
+    public boolean isSnooze() {
+        return snooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        this.snooze = snooze;
+    }
+
+    public int getMinToSnooze() {
+        return minToSnooze;
+    }
+
+    public void setMinToSnooze(int minToSnooze) {
+        this.minToSnooze = minToSnooze;
     }
 }

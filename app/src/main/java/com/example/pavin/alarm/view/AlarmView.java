@@ -28,4 +28,6 @@ public interface AlarmView extends BaseView{
     void setPhraseToET(String phrase);
 
     void startPreviewActivity(Alarm alarm);
+
+    void setSnoozeTime(int min);
 }

@@ -21,4 +21,6 @@
     <string name="once">Once</string>
     <string name="repeats">Repeats</string>
     <string name="preview">Preview</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="snooze">Snooze minutes</string>
 </resources>

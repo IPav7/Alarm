@@ -19,12 +19,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -50,6 +52,8 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private SeekBar seekBarVolume;
     private ImageView[] imgDays;
     private EditText etPhrase;
+    private SeekBar seekBarSnooze;
+    private TextView tvSnoozeTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 alarmPresenter.onClickChooseSound();
             }
         });
+        initializeSeekBarSnooze();
         tvSoundName = findViewById(R.id.tvSoundName);
         etPhrase = findViewById(R.id.etPhrase);
         swTTS = findViewById(R.id.swTTS);
@@ -93,6 +98,36 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
                 findViewById(R.id.imgSun)
         };
         attachPresenter();
+    }
+
+    private void initializeSeekBarSnooze() {
+        tvSnoozeTime = findViewById(R.id.tvSnoozeTime);
+        seekBarSnooze = findViewById(R.id.seekBarSnooze);
+        seekBarSnooze.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                alarmPresenter.setSnoozeTime(i + 5);
+                String text = "Snooze " + (i + 5) + "m";
+                tvSnoozeTime.setText(text);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    @Override
+    public void setSnoozeTime(int min) {
+        String text = "Snooze " + min + "m";
+        tvSnoozeTime.setText(text);
+        seekBarSnooze.setProgress(min - 5);
     }
 
     public void onDayClick(View view) {
@@ -297,6 +332,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
         Intent intent = new Intent(this, AlarmClockActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(App.KEY_ALARM, alarm);
+        bundle.putBoolean(AlarmClockActivity.ALARM_PREVIEW, true);
         intent.putExtra(App.KEY_BUNDLE, bundle);
         startActivity(intent);
     }

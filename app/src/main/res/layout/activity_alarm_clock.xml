@@ -6,16 +6,37 @@
     tools:context=".view.AlarmClockActivity">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSnooze"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/dismiss"
+        android:id="@+id/btnDismiss"
+        android:textAllCaps="false"
+        android:layout_centerInParent="true"
+        android:background="@drawable/buttonshape"
         android:onClick="onClick"/>
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/btnSnooze"
+        android:textAllCaps="false"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/btnDismiss"
+        android:background="@drawable/buttonshape"
+        android:onClick="onClick"/>
+
+    <TextClock
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:id="@+id/btnCancel"
-        android:onClick="onClick"/>
+        android:layout_above="@id/btnSnooze"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:textSize="96sp"
+        android:format24Hour="hh:mm"/>
 
 </RelativeLayout>

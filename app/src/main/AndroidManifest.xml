@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.AlarmActivity" />
-        <activity android:name=".view.AlarmClockActivity"/>
+        <activity android:name=".view.AlarmClockActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

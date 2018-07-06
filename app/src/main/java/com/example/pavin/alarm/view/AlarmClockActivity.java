@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.R;
@@ -22,6 +23,7 @@ import java.util.Locale;
 
 public class AlarmClockActivity extends AppCompatActivity {
 
+    public static final String ALARM_PREVIEW = "PREVIEW";
     private Alarm alarm;
     private MediaPlayer mediaPlayer;
     private TextToSpeech textToSpeech;
@@ -32,6 +34,7 @@ public class AlarmClockActivity extends AppCompatActivity {
     private int origVolume;
     private int maxVolume;
     private Handler handlerSpeaking;
+    private boolean isPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,10 @@ public class AlarmClockActivity extends AppCompatActivity {
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         wakeUpPhone();
         Bundle bundle = getIntent().getBundleExtra(App.KEY_BUNDLE);
+        isPreview = bundle.getBoolean(ALARM_PREVIEW, false);
         alarm = (Alarm) bundle.getSerializable(App.KEY_ALARM);
+        String snoozeText = "Snooze for " + alarm.getMinToSnooze() + "m";
+        ((Button)findViewById(R.id.btnSnooze)).setText(snoozeText);
         initializeMediaPlayer();
         mediaPlayer.start();
         handlerPlayer = new Handler();
@@ -78,11 +84,18 @@ public class AlarmClockActivity extends AppCompatActivity {
     Runnable stopPlayer = new Runnable() {
         @Override
         public void run() {
-            stopPlayer();
+            stopPlayer(true);
         }
     };
 
-    private void stopPlayer() {
+    private void stopPlayer(boolean snooze) {
+        alarm.setSnooze(snooze & !isPreview);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                App.getInstance().getAlarmDatabase().alarmDAO().update(alarm);
+            }
+        }).start();
         handlerPlayer.removeCallbacks(stopPlayer);
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
@@ -91,7 +104,7 @@ public class AlarmClockActivity extends AppCompatActivity {
             handlerTTS = new Handler();
             handlerTTS.postDelayed(checkInit, 1000);
         }
-        if (!alarm.isOneTime()) {
+        if ((!alarm.isOneTime() || alarm.isSnooze()) && !isPreview) {
             App.setAlarm(alarm);
         }
         if (alarm.isTtsEnabled()) {
@@ -156,7 +169,7 @@ public class AlarmClockActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        stopPlayer();
+        stopPlayer(view.getId() == R.id.btnSnooze);
     }
 
     @Override

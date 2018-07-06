@@ -46,9 +46,12 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmRecyclerAdap
             alarmViewHolder.getImgDays()[j].setVisibility(alarms.get(i).getDays()[j] ? View.VISIBLE : View.GONE);
         }
         alarmViewHolder.getTvOnce().setVisibility(alarms.get(i).isOneTime() ? View.VISIBLE : View.GONE);
-        alarmViewHolder.getSwEnabled().setChecked(alarms.get(i).isEnabled());
-        long millsLeft = alarms.get(i).getNextTrigger() - Calendar.getInstance().getTimeInMillis();
-        String timeLeft = millsLeft / 86400000 + " d " + millsLeft % 86400000 / 3600000 + " h " + millsLeft % 3600000 / 60000 + "m";
+        String timeLeft = "Snoozing";
+        if(!alarms.get(i).isSnooze()) {
+            alarmViewHolder.getSwEnabled().setChecked(alarms.get(i).isEnabled());
+            long millsLeft = alarms.get(i).getNextTrigger() - Calendar.getInstance().getTimeInMillis();
+            timeLeft = millsLeft / 86400000 + " d " + millsLeft % 86400000 / 3600000 + " h " + millsLeft % 3600000 / 60000 + " m";
+        }
         alarmViewHolder.getTvLeft().setText(timeLeft);
         int hours = alarms.get(i).getHours();
         int mins = alarms.get(i).getMins();
