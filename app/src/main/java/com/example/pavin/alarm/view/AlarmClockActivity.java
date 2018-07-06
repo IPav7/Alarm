@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.R;
@@ -35,6 +36,7 @@ public class AlarmClockActivity extends AppCompatActivity {
     private int maxVolume;
     private Handler handlerSpeaking;
     private boolean isPreview;
+    private TextView tvTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,9 @@ public class AlarmClockActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getBundleExtra(App.KEY_BUNDLE);
         isPreview = bundle.getBoolean(ALARM_PREVIEW, false);
         alarm = (Alarm) bundle.getSerializable(App.KEY_ALARM);
-        String snoozeText = "Snooze for " + alarm.getMinToSnooze() + "m";
+        String snoozeText = "Snooze for " + alarm.getMinToSnooze() + " m";
         ((Button)findViewById(R.id.btnSnooze)).setText(snoozeText);
+        setTime();
         initializeMediaPlayer();
         mediaPlayer.start();
         handlerPlayer = new Handler();
@@ -57,6 +60,20 @@ public class AlarmClockActivity extends AppCompatActivity {
             initializeTTS();
         }
     }
+
+    private void setTime() {
+        tvTime = findViewById(R.id.textClock);
+        int hours = alarm.getHours();
+        int mins = alarm.getMins();
+        String time = hours + ":";
+        if (alarm.getHours() < 10)
+            time = "0" + time;
+        if (mins < 10)
+            time = time + "0" + mins;
+        else time = time + mins;
+        tvTime.setText(time);
+    }
+
 
     private void sayPhrase() {
         if (textToSpeech != null) {
