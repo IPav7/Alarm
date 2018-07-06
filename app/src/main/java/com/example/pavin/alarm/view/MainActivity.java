@@ -1,7 +1,11 @@
 package com.example.pavin.alarm.view;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkGoogleTTSInstalled();
         RecyclerView rvAlarms = findViewById(R.id.rvAlarms);
         rvAlarms.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -34,10 +39,30 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         rvAlarms.setAdapter(adapter);
     }
 
+    private void checkGoogleTTSInstalled() {
+        PackageManager pm = getPackageManager();
+        final String googleTTSPackage = "com.google.android.tts";
+        try {
+            pm.getPackageInfo(googleTTSPackage, PackageManager.GET_ACTIVITIES);
+        } catch (PackageManager.NameNotFoundException e) {
+            Snackbar.make(findViewById(R.id.mainLayout), "For a better experience install Google TTS", Snackbar.LENGTH_LONG)
+                    .setAction("INSTALL", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + googleTTSPackage)));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + googleTTSPackage)));
+                            }
+                        }
+                    }).show();
+        }
+    }
+
     @Override
     public void attachPresenter() {
-        presenter = (MainPresenter)getLastCustomNonConfigurationInstance();
-        if(presenter == null) {
+        presenter = (MainPresenter) getLastCustomNonConfigurationInstance();
+        if (presenter == null) {
             presenter = new MainPresenter();
         }
         presenter.bindView(this);
@@ -55,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     }
 
     @Override
-    public void showAlarms(){
+    public void showAlarms() {
         findViewById(R.id.tvNoAlarm).setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
         findViewById(R.id.tvToCreate).setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
         adapter.notifyDataSetChanged();

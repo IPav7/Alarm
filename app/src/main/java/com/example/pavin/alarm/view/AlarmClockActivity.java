@@ -25,8 +25,6 @@ public class AlarmClockActivity extends AppCompatActivity {
     private Alarm alarm;
     private MediaPlayer mediaPlayer;
     private TextToSpeech textToSpeech;
-    private String googleTtsPackage = "com.google.android.tts";
-    private final String ENG_TAG = "TTS ENGINE";
     private Handler handlerPlayer;
     private Handler handlerTTS;
     private boolean TTSinit = false;
@@ -60,7 +58,7 @@ public class AlarmClockActivity extends AppCompatActivity {
             if (phrase.length() == 0 || alarm.isSayTime())
                 phrase = alarm.getHours() + " hours " + alarm.getMins() + " minutes";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null, ENG_TAG);
+                textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null, "TTS ENGINE");
             } else {
                 textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null);
             }
@@ -74,7 +72,7 @@ public class AlarmClockActivity extends AppCompatActivity {
                 textToSpeech.setLanguage(Locale.ENGLISH);
                 TTSinit = true;
             }
-        }, googleTtsPackage);
+        }, "com.google.android.tts");
     }
 
     Runnable stopPlayer = new Runnable() {

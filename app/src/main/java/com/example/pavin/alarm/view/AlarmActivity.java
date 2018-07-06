@@ -50,7 +50,6 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     private SeekBar seekBarVolume;
     private ImageView[] imgDays;
     private EditText etPhrase;
-    //private String googleTTSPackage = "com.google.android.tts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
