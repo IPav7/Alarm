@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.pavin.alarm.App;
 import com.example.pavin.alarm.R;
 import com.example.pavin.alarm.model.Alarm;
 import com.example.pavin.alarm.model.Sound;
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSoundChooseListener, AlarmView, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG_SOUND = "TAG_SOUND";
-    private static final String SAVE_PHRASE = "savedPhrase";
     private static final int REQUEST_CODE_READ_STORAGE = 100;
     private AlarmPresenter alarmPresenter;
     private TextView tvSoundName;
@@ -230,8 +230,7 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenu:
-                if (swTTS.isChecked())
-                    alarmPresenter.changePhrase(getPhrase());
+                alarmPresenter.changePhrase(getPhrase());
                 alarmPresenter.submitChanges();
                 break;
             default:
@@ -290,7 +289,17 @@ public class AlarmActivity extends AppCompatActivity implements DialogSound.OnSo
     }
 
     public void onPreviewClick(View view) {
+        alarmPresenter.changePhrase(etPhrase.getText().toString());
         alarmPresenter.previewAlarm();
+    }
+
+    @Override
+    public void startPreviewActivity(Alarm alarm) {
+        Intent intent = new Intent(this, AlarmClockActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(App.KEY_ALARM, alarm);
+        intent.putExtra(App.KEY_BUNDLE, bundle);
+        startActivity(intent);
     }
 
     @Override

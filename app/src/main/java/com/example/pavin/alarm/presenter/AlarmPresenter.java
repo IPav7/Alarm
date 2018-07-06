@@ -146,6 +146,6 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
     }
 
     public void previewAlarm() {
-
+        getView().startPreviewActivity(alarm);
     }
 }

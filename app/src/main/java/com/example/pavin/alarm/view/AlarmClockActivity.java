@@ -57,7 +57,7 @@ public class AlarmClockActivity extends AppCompatActivity {
     private void sayPhrase() {
         if (textToSpeech != null) {
             String phrase = alarm.getPhrase();
-            if (phrase.length() == 0)
+            if (phrase.length() == 0 || alarm.isSayTime())
                 phrase = alarm.getHours() + " hours " + alarm.getMins() + " minutes";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 textToSpeech.speak(phrase, TextToSpeech.QUEUE_ADD, null, ENG_TAG);
@@ -99,14 +99,14 @@ public class AlarmClockActivity extends AppCompatActivity {
         if (alarm.isTtsEnabled()) {
             handlerSpeaking = new Handler();
             handlerSpeaking.postDelayed(isSpeaking, 1000);
-        } else finishAffinity();
+        } else finish();
     }
 
     Runnable isSpeaking = new Runnable() {
         @Override
         public void run() {
             if (textToSpeech != null && !textToSpeech.isSpeaking())
-                finishAffinity();
+                finish();
             else handlerSpeaking.postDelayed(isSpeaking, 1000);
         }
     };

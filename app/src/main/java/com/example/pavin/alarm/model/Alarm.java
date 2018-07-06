@@ -43,10 +43,10 @@ public class Alarm implements Serializable {
         days = new boolean[7];
         ttsEnabled = false;
         volume = 1;
-        phrase = "";
+        sayTime = false;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume) {
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, float volume, boolean sayTime) {
         this.id = id;
         this.sound = sound;
         this.enabled = enabled;
@@ -55,10 +55,11 @@ public class Alarm implements Serializable {
         this.days = days;
         this.ttsEnabled = ttsEnabled;
         this.volume = volume;
+        this.sayTime = sayTime;
     }
 
-    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, float volume) {
-        this(id, sound, enabled, hours, mins, days, ttsEnabled, volume);
+    public Alarm(int id, Sound sound, boolean enabled, int hours, int mins, boolean[] days, boolean ttsEnabled, String phrase, float volume, boolean sayTime) {
+        this(id, sound, enabled, hours, mins, days, ttsEnabled, volume, sayTime);
         this.phrase = phrase;
     }
 
