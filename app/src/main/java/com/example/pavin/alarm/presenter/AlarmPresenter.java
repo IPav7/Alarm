@@ -51,7 +51,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         }
     }
 
-    public void setSnoozeTime(int mins){
+    public void setSnoozeTime(int mins) {
         alarm.setMinToSnooze(mins);
     }
 
@@ -126,7 +126,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView> {
         }
     }
 
-    public void setSayTime(boolean isSayTime){
+    public void setSayTime(boolean isSayTime) {
         alarm.setSayTime(isSayTime);
     }
 

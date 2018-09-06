@@ -50,7 +50,7 @@ public class AlarmClockActivity extends AppCompatActivity {
         isPreview = bundle.getBoolean(ALARM_PREVIEW, false);
         alarm = (Alarm) bundle.getSerializable(App.KEY_ALARM);
         String snoozeText = "Snooze for " + alarm.getMinToSnooze() + " m";
-        ((Button)findViewById(R.id.btnSnooze)).setText(snoozeText);
+        ((Button) findViewById(R.id.btnSnooze)).setText(snoozeText);
         setTime();
         initializeMediaPlayer();
         mediaPlayer.start();

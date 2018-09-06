@@ -34,15 +34,15 @@ public class App extends Application {
                 .build();
     }
 
-    public static void setAlarm(Alarm alarm){
+    public static void setAlarm(Alarm alarm) {
         Intent intent = new Intent(INSTANCE.getApplicationContext(), AlarmClockActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_ALARM, alarm);
         intent.putExtra(KEY_BUNDLE, bundle);
         PendingIntent pendingIntent = PendingIntent.getActivity(INSTANCE.getApplicationContext(), alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) INSTANCE.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        if(alarmManager != null) {
-            if(alarm.isEnabled()) {
+        if (alarmManager != null) {
+            if (alarm.isEnabled()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.getNextTrigger(), pendingIntent);
                 } else {
@@ -50,12 +50,11 @@ public class App extends Application {
                 }
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 Log.e("SETTING UP ALARM №" + alarm.getId() + " AT: ", sdf.format(new Date(alarm.getNextTrigger())));
-            }
-            else alarmManager.cancel(pendingIntent);
+            } else alarmManager.cancel(pendingIntent);
         }
     }
 
-    public static App getInstance(){
+    public static App getInstance() {
         return INSTANCE;
     }
 

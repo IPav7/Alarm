@@ -18,7 +18,7 @@ public class BootReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 List<Alarm> alarms = alarmDAO.getAll();
-                if(alarms != null) {
+                if (alarms != null) {
                     for (Alarm alarm : alarms) {
                         App.setAlarm(alarm);
                     }

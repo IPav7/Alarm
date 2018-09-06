@@ -121,7 +121,7 @@ public class Alarm implements Serializable {
 
     public long getNextTrigger() {
         Calendar calendar = Calendar.getInstance();
-        if(snooze){
+        if (snooze) {
             calendar.set(Calendar.SECOND, 0);
             calendar.setTimeInMillis(calendar.getTimeInMillis() + minToSnooze * 60 * 1000);
             return calendar.getTimeInMillis();
